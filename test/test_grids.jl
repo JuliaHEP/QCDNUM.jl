@@ -52,25 +52,29 @@ using Test
     qq_grid = QCDNUM.gqcopy(nq)
     @test qq_grid[1] ≈ 2e0
 
-    # Weights
-    for itype in [1, 2, 3]
+    mktempdir(prefix = "test_QCDNUM_jl") do dir
+        cd(dir) do
+            # Weights
+            for itype in [1, 2, 3]
 
-        nw = QCDNUM.fillwt(itype)
-        @test typeof(nw) == Int32
+                nw = QCDNUM.fillwt(itype)
+                @test typeof(nw) == Int32
 
-        lun = QCDNUM.nxtlun(0)
-        @test QCDNUM.dmpwgt(itype, lun, string("test_dmpwgt", string(itype), ".wgt")) == nothing
-        @test QCDNUM.wtfile(itype, string("test_wtfile", string(itype), ".wgt")) == nothing
-        sleep(1)
-        
-        lun = QCDNUM.nxtlun(0)
-        nwds, ierr = QCDNUM.readwt(lun, string("test_dmpwgt", string(itype), ".wgt"))
-        @test ierr == 0
-    end
+                lun = QCDNUM.nxtlun(0)
+                @test QCDNUM.dmpwgt(itype, lun, string("test_dmpwgt", string(itype), ".wgt")) == nothing
+                @test QCDNUM.wtfile(itype, string("test_wtfile", string(itype), ".wgt")) == nothing
+                sleep(1)
+                
+                lun = QCDNUM.nxtlun(0)
+                nwds, ierr = QCDNUM.readwt(lun, string("test_dmpwgt", string(itype), ".wgt"))
+                @test ierr == 0
+            end
 
-    for itype in [1, 2, 3]
-        rm(string("test_wtfile", string(itype), ".wgt"))
-        rm(string("test_dmpwgt", string(itype), ".wgt"))
+            for itype in [1, 2, 3]
+                rm(string("test_wtfile", string(itype), ".wgt"))
+                rm(string("test_dmpwgt", string(itype), ".wgt"))
+            end
+        end
     end
 
     nwtot, nwuse = QCDNUM.nwused()

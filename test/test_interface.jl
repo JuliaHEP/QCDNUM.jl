@@ -41,16 +41,20 @@ end
     @test typeof(eps) == Float64
     @test eps < 0.1
 
-    test_file_name = "test_qcdnum_params.h5"
+    mktempdir(prefix = "test_QCDNUM_jl") do dir
+        cd(dir) do
 
-    QCDNUM.save_params(test_file_name, evolution_params)
+            test_file_name = "test_qcdnum_params.h5"
 
-    loaded_params = QCDNUM.load_params(test_file_name)
+            QCDNUM.save_params(test_file_name, evolution_params)
 
-    @test typeof(loaded_params["evolution_params"]) == QCDNUM.EvolutionParams
+            loaded_params = QCDNUM.load_params(test_file_name)
 
-    rm(test_file_name)
+            @test typeof(loaded_params["evolution_params"]) == QCDNUM.EvolutionParams
 
+            rm(test_file_name)
+        end
+    end
 end
 
 @testset "SPLINT interface" begin
@@ -66,14 +70,17 @@ end
 
     @test_logs (:warn, warn_string) QCDNUM.splint_init(splint_params)
 
-    QCDNUM.save_params(test_file_name, splint_params)
+    mktempdir(prefix = "test_QCDNUM_jl") do dir
+        cd(dir) do
+            QCDNUM.save_params(test_file_name, splint_params)
 
-    loaded_params = QCDNUM.load_params(test_file_name)
+            loaded_params = QCDNUM.load_params(test_file_name)
 
-    @test typeof(loaded_params["splint_params"]) == QCDNUM.SPLINTParams
+            @test typeof(loaded_params["splint_params"]) == QCDNUM.SPLINTParams
 
-    rm(test_file_name)
-
+            rm(test_file_name)
+        end
+    end
 end
 
 @testset "SPLINT + evolution interface" begin

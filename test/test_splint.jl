@@ -74,21 +74,25 @@ include("pdf_functions.jl")
     # Store extra info
     @test QCDNUM.ssp_spsetval(iasp, 1, 123456.789) == nothing
     
-    # Save and load from file
-    @test QCDNUM.ssp_spdump(iasp, "test_spline.dat") == nothing
-    sleep(1)
-    iasp_read = QCDNUM.isp_spread("test_spline.dat")
-    @test QCDNUM.isp_splinetype(iasp_read) == type
-    @test QCDNUM.dsp_spgetval(iasp_read, 1) == 123456.789
+    mktempdir(prefix = "test_QCDNUM_jl") do dir
+        cd(dir) do
+            # Save and load from file
+            @test QCDNUM.ssp_spdump(iasp, "test_spline.dat") == nothing
+            sleep(1)
+            iasp_read = QCDNUM.isp_spread("test_spline.dat")
+            @test QCDNUM.isp_splinetype(iasp_read) == type
+            @test QCDNUM.dsp_spgetval(iasp_read, 1) == 123456.789
 
-    rm("test_spline.dat")
+            rm("test_spline.dat")
     
-    # Evalute function and integral
-    x = 0.1
-    q = 100.0
-    f = QCDNUM.dsp_funs2(iasp, x, q, 1)
-    @test isapprox(f, 0.408, rtol=0.01)
-    @test f == QCDNUM.dsp_funs2(iasp_read, x, q, 1)
+            # Evalute function and integral
+            x = 0.1
+            q = 100.0
+            f = QCDNUM.dsp_funs2(iasp, x, q, 1)
+            @test isapprox(f, 0.408, rtol=0.01)
+            @test f == QCDNUM.dsp_funs2(iasp_read, x, q, 1)
+        end
+    end
 
     x1 = 0.01
     x2 = 0.1
