@@ -110,7 +110,7 @@ function func1(ipdf, x)::Float64
     return f
 end
 
-func1_c = @cfunction(func1, Float64, (Ref{Int32}, Ref{Float64}));
+wrapped_func1 = WrappedPDF(func1);
 
 # We can also make a function that passes an input PDF that is
 # an output of another PDF. This will be useful later on.
@@ -134,7 +134,7 @@ function func2(ipdf, x)::Float64
     return f
 end
 
-func2_c = @cfunction(func2, Float64, (Ref{Int32}, Ref{Float64}));
+wrapped_func2 = WrappedPDF(func2);
 
 # Now we can set up QCDNUM and print a summary of our inputs.
 
@@ -162,7 +162,7 @@ iq0 = QCDNUM.iqfrmq(q0)
 # Evolve with [`QCDNUM.evolfg`](@ref)
 iset1 = 1                                       
 jtype = 10*iset1+itype
-eps = QCDNUM.evolfg(jtype, func1_c, def, iq0)
+eps = QCDNUM.evolfg(jtype, wrapped_func1, def, iq0)
 QCDNUM.qstore("write", 1, float(iset1))
 QCDNUM.qstore("write", 2, float(iq0))
 
@@ -170,7 +170,7 @@ QCDNUM.qstore("write", 2, float(iq0))
 iset2 = 2
 jtype = 10*iset2+itype
 QCDNUM.setint("edbg", 0) # turn off debug
-eps = QCDNUM.evsgns(jtype, func2_c, isns, 12, iq0);
+eps = QCDNUM.evsgns(jtype, wrapped_func2, isns, 12, iq0);
 
 # Now we can compare the results from each case,
 # by first defining a useful function

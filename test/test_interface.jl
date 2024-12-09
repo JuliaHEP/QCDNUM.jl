@@ -33,8 +33,6 @@ end
 
     input_pdf = QCDNUM.InputPDF(func=func, map=def)
 
-    @test typeof(input_pdf.cfunc) == Base.CFunction
-
     # Evolve    
     eps = QCDNUM.evolve(input_pdf, evolution_params)
 

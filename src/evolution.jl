@@ -50,8 +50,18 @@ function altabn(iset::Integer, iq::Integer, n::Integer)
     asn[], ierr[]
 end
 
+
 """
-    evolfg(itype, func, def, iq0)
+    const WrappedPDF = FunctionWrappers.FunctionWrapper{Float64, Tuple{Int32, Float64}}
+"""
+const WrappedPDF = FunctionWrapper{Float64, Tuple{Int32, Float64}}
+export WrappedPDF
+
+
+"""
+    evolfg(itype::Integer, func::Union{Base.CFunction, Ptr{Nothing}}, def::Array{Float64}, iq0::Integer)
+    evolfg(itype::Integer, func::WrappedPDF, def::Array{Float64}, iq0::Integer)
+    evolfg(itype::Integer, func::InputPDF, iq0::Integer)
 
 Evolve the flavour pdf set.
 
@@ -68,20 +78,41 @@ quark species `i` to the input distribution `j`.
 - `epsi::Float64`: max deviation of the quadratic spline interpolation 
 from linear interpolation mid-between grid points.
 """
-function evolfg(itype::Integer, func::Union{Base.CFunction, Ptr{Nothing}}, def::Array{Float64}, iq0::Integer)
+function evolfg end
 
+function evolfg(itype::Integer, func::Union{Base.CFunction, Ptr{Nothing}}, def::Array{Float64}, iq0::Integer)
     itype = Ref{Int32}(itype)
     iq0 = Ref{Int32}(iq0)
     epsi = Ref{Float64}()
-    
+
     @qlccall evolfg_(itype::Ref{Int32}, func::Ptr{Cvoid}, def::Ref{Float64},
                    iq0::Ref{Int32}, epsi::Ref{Float64})::Nothing
 
     epsi[]
 end
 
+_current_wrapped_pdf::WrappedPDF = WrappedPDF(0)
+_call_wrapped_pdf_cfunc::Ptr{Nothing} = Ptr{Nothing}(0)
+_call_wrapped_pdf(ipdf::Integer, x::Real) = _current_wrapped_pdf(ipdf, x)
+
+function _wrappedpdf_cfunc(func::WrappedPDF)
+    global _call_wrapped_pdf_cfunc
+    global _current_wrapped_pdf
+    if _call_wrapped_pdf_cfunc == Ptr{Nothing}(0)
+        _call_wrapped_pdf_cfunc = @cfunction(_call_wrapped_pdf, Float64, (Ref{Int32}, Ref{Float64}))
+    end
+    _current_wrapped_pdf = func
+    return _call_wrapped_pdf_cfunc
+end
+
+function evolfg(itype::Integer, func::WrappedPDF, def::Array{Float64}, iq0::Integer)
+    return @lock qcdnum_lock() evolfg(itype, _wrappedpdf_cfunc(func), def, iq0)        
+end
+
+
 """
-    evsgns(itype, func, isns, n, iq0)
+    evsgns(itype::Integer, func::Union{Base.CFunction, Ptr{Nothing}}, isns::Array{Int32,1}, n::Integer, iq0::Integer)
+    evsgns(itype::Integer, func::WrappedPDF, isns::Array{Int32,1}, n::Integer, iq0::Integer)
 
 Evolve an arbitrary set of single/non-singlet pdfs. The 
 evolution can only run in FFNS or MFNS mode, as it is not 
@@ -99,8 +130,9 @@ singlet, valence non-singlet and +/- q_ns singlets respectively.
 - `epsi::Float64`: Maximum deviation of the quadratic spline from 
 linear interpolation mid-between the grid points.
 """
-function evsgns(itype::Integer, func::Union{Base.CFunction, Ptr{Nothing}}, isns::Array{Int32,1}, n::Integer, iq0::Integer)
+function evsgns end
 
+function evsgns(itype::Integer, func::Union{Base.CFunction, Ptr{Nothing}}, isns::Array{Int32,1}, n::Integer, iq0::Integer)
     itype = Ref{Int32}(itype)
     n = Ref{Int32}(n)
     iq0 = Ref{Int32}(iq0)
@@ -111,6 +143,11 @@ function evsgns(itype::Integer, func::Union{Base.CFunction, Ptr{Nothing}}, isns:
 
     epsi[]
 end
+
+function evsgns(itype::Integer, func::WrappedPDF, isns::Array{Int32,1}, n::Integer, iq0::Integer)
+    return @lock qcdnum_lock() evsgns(itype, _wrappedpdf_cfunc(func), isns, n, iq0)
+end
+
 
 """
     evsgnsp(itype, func, isns, n, iq0)

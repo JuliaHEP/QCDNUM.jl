@@ -9,7 +9,7 @@ include("pdf_functions.jl")
     QCDNUM.qcinit(-6, "")
     
     # C-pointer to func
-    func_c = @cfunction($func, Float64, (Ref{Int32}, Ref{Float64}))
+    wrapped_func = WrappedPDF(func)
 
     # Initialise
     QCDNUM.qcinit(-6, "")
@@ -31,11 +31,11 @@ include("pdf_functions.jl")
 
     # Evolution
     iq0 = QCDNUM.iqfrmq(2.0)
-    eps = QCDNUM.evolfg(1, func_c, def, iq0)
+    eps = QCDNUM.evolfg(1, wrapped_func, def, iq0)
     @test typeof(eps) == Float64
 
     # SPLINT
-    func_sp_c = @cfunction($func_sp, Float64, (Ref{Int32}, Ref{Int32}, Ref{UInt8}))
+    wrapped_func_sp = WrappedSpFun(func_sp)
     
     iset = 1
     ipdf = 1
@@ -55,7 +55,7 @@ include("pdf_functions.jl")
     @test typeof(iasp) == Int32
 
     # Fill the spline and set no kinematic limit
-    QCDNUM.ssp_s2fill(iasp, func_sp_c, 0.0)
+    QCDNUM.ssp_s2fill(iasp, wrapped_func_sp, 0.0)
 
     # Check spline type
     type = QCDNUM.isp_splinetype(iasp)

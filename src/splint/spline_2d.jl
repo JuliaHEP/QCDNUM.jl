@@ -20,11 +20,20 @@ function isp_s2make(istepx::Integer, istepq::Integer)
     iasp[]
 end
 
+
 """
-    ssp_s2fill(iasp, fun, rs)
+    const WrappedSpFun = FunctionWrappers.FunctionWrapper{Float64, Tuple{Int32, Float64}}
+"""
+const WrappedSpFun = FunctionWrapper{Float64, Tuple{Int32, Int32, UInt8}}
+export WrappedSpFun
+
+
+"""
+    ssp_s2fill(iasp::Integer, fun::Union{Base.CFunction, Ptr{Nothing}}, rs::Float64)
+    ssp_s2fill(iasp::Integer, fun::WrappedSpFun, rs::Float64)
 
 Fill the spline object by passing a function. The function 
-must have the signature fun(ix::Integer, iq::Integer, first::Boolean).
+must have the signature fun(ix::Integer, iq::Integer, first::Bool).
 
 # Arguments
 - `iasp::Integer`: address of the spline object
@@ -38,6 +47,24 @@ function ssp_s2fill(iasp::Integer, fun::Union{Base.CFunction, Ptr{Nothing}}, rs:
 
     @qlccall ssp_s2fill_(iasp::Ref{Int32}, fun::Ptr{Cvoid}, rs::Ref{Float64})::Nothing
     nothing
+end
+
+_current_wrapped_spfun::WrappedSpFun = WrappedSpFun(0)
+_call_wrapped_spfun_cfunc::Ptr{Nothing} = Ptr{Nothing}(0)
+_call_wrapped_spfun(ix::Integer, iq::Integer, frst::Integer) = _current_wrapped_spfun(ix, iq, frst)
+
+function _wrappedspfun_cfunc(func::WrappedSpFun)
+    global _call_wrapped_spfun_cfunc
+    global _current_wrapped_spfun
+    if _call_wrapped_spfun_cfunc == Ptr{Nothing}(0)
+        _call_wrapped_spfun_cfunc = @cfunction(_call_wrapped_spfun, Float64, (Ref{Int32}, Ref{Int32}, Ref{UInt8}))
+    end
+    _current_wrapped_spfun = func
+    return _call_wrapped_spfun_cfunc
+end
+
+function ssp_s2fill(iasp::Integer, fun::WrappedSpFun, rs::Float64)
+    return @lock qcdnum_lock() ssp_s2fill(iasp, _wrappedspfun_cfunc(fun), rs)
 end
 
 

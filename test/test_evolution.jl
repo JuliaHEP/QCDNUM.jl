@@ -6,9 +6,9 @@ include("pdf_functions.jl")
 @testset "Evolution & interpolation" begin
 
     # C-pointer to func
-    func_c = @cfunction($func, Float64, (Ref{Int32}, Ref{Float64}))
-    func_ext_c = @cfunction($func_ext, Float64, (Ref{Int32}, Ref{Float64}, Ref{Float64}, Ref{UInt8}))
-    func_usr_c = @cfunction($func_usr, Float64, (Ref{Int32}, Ref{Float64}, Ref{Float64}, Ref{UInt8}))
+    wrapped_func = WrappedPDF(func)
+    func_ext_c = @cfunction(func_ext, Float64, (Ref{Int32}, Ref{Float64}, Ref{Float64}, Ref{UInt8}))
+    func_usr_c = @cfunction(func_usr, Float64, (Ref{Int32}, Ref{Float64}, Ref{Float64}, Ref{UInt8}))
 
     # Initialise
     QCDNUM.qcinit(-6, "")
@@ -29,7 +29,7 @@ include("pdf_functions.jl")
 
     # Evolution
     iq0 = QCDNUM.iqfrmq(2.0)
-    eps = QCDNUM.evolfg(1, func_c, def, iq0)
+    eps = QCDNUM.evolfg(1, wrapped_func, def, iq0)
     @test typeof(eps) == Float64
     @test eps < 0.1
 

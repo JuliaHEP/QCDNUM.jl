@@ -6,7 +6,7 @@ include("pdf_functions.jl")
 @testset "Structure functions" begin
     
     # C-pointer to func
-    func_c = @cfunction(func, Float64, (Ref{Int32}, Ref{Float64}))
+    wrapped_func = WrappedPDF(func)
 
     # Initialise
     QCDNUM.qcinit(-6, "")
@@ -34,7 +34,7 @@ include("pdf_functions.jl")
 
     # Evolution
     iq0 = QCDNUM.iqfrmq(2.0)
-    eps = QCDNUM.evolfg(1, func_c, def, iq0)
+    eps = QCDNUM.evolfg(1, wrapped_func, def, iq0)
     @test typeof(eps) == Float64
 
     Au = 4.0/9.0 

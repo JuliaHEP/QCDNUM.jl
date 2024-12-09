@@ -105,20 +105,28 @@ with SPLINT package of QCDNUM.
     spline_addresses::SplineAddresses = SplineAddresses()
 end
 
+
 """
-    InputPDF
+    InputPDF(; func::Function, map::AbstractArray{<:Real})
 
 Struct containing all necessary info to pass a PDF 
 (parton distribution function) into QCDNUM.
 """
-@with_kw struct InputPDF
+struct InputPDF{F<:Function}
     "input PDF function specified in julia"
-    func::Function
-    "C-stype pointer to input func to pass to QCDNUM"
-    cfunc::Base.CFunction = @cfunction($func, Float64, (Ref{Int32}, Ref{Float64}))
+    func::F
     "map of quark species to input distribution"
     map::Array{Float64}
+
+    _wrapped_func::WrappedPDF
 end
+
+InputPDF(; func::Function, map::AbstractArray{<:Real}) = InputPDF(func, map, WrappedPDF(func))
+
+function evolfg(itype::Integer, pdf::InputPDF, iq0::Integer)
+    evolfg(itype, pdf._wrapped_func, pdf.map, iq0)
+end
+
 
 """
     init()
@@ -160,7 +168,6 @@ end
 High-level interface to QCD evolution with QCDNUM.
 """
 function evolve(input_pdf::InputPDF, evolution_params::EvolutionParams)
-
     p = evolution_params
 
     # Set up
@@ -178,7 +185,7 @@ function evolve(input_pdf::InputPDF, evolution_params::EvolutionParams)
 
     iq0 = QCDNUM.iqfrmq(p.q0)
 
-    eps = QCDNUM.evolfg(p.output_pdf_loc, input_pdf.cfunc, input_pdf.map, iq0)
+    eps = QCDNUM.evolfg(p.output_pdf_loc, input_pdf, iq0)
 
     return eps
 end

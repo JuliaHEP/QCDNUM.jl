@@ -94,7 +94,7 @@ function func(ipdf, x)::Float64
     return f
 end
 
-func_c = @cfunction(func, Float64, (Ref{Int32}, Ref{Float64}))
+wrapped_func = WrappedPDF(func)
 
 proton = Float64.([4.,1.,4.,1.,4.,1.,0.,1.,4.,1.,4.,1.,4.])/9.0;
 xx = Array{Float64}(undef, 1000)
@@ -139,7 +139,7 @@ iq0 = QCDNUM.iqfrmq(q0)
 @printf(" Wait: 1000 evols and 2.10^6 stfs will take ... ")
 @time begin
     for iter in 1:1000
-        eps = QCDNUM.evolfg(itype, func_c, def, iq0)
+        eps = QCDNUM.evolfg(itype, wrapped_func, def, iq0)
         ff = QCDNUM.zmstfun(1, proton, xx, q2, 1000, 1)
         ff = QCDNUM.zmstfun(2, proton, xx, q2, 1000, 1)
     end

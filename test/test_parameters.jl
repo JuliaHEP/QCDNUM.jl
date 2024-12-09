@@ -39,9 +39,9 @@ include("pdf_functions.jl")
     iqb = QCDNUM.iqfrmq(25.0)
     QCDNUM.setcbt(0, iqc, iqb, 0)
 
-    func_c = @cfunction(func, Float64, (Ref{Int32}, Ref{Float64}))
+    wrapped_func = WrappedPDF(func)
     iq0 = QCDNUM.iqfrmq(2.0)
-    eps = QCDNUM.evolfg(1, func_c, def, iq0)
+    eps = QCDNUM.evolfg(1, wrapped_func, def, iq0)
 
     # VFNS & FFNS
     for nfix in [0, 1, 3, 4, 5, 6]

@@ -103,7 +103,7 @@ function func(ipdf, x)::Float64
     return f
 end
 
-func_c = @cfunction(func, Float64, (Ref{Int32}, Ref{Float64}))
+wrapped_func = WrappedPDF(func)
 
 # Next, let's initialise QCDNUM and run QCDNUM to evolve the PDF.
 
@@ -118,7 +118,7 @@ iqb = QCDNUM.iqfrmq(q2b)
 iqt = QCDNUM.iqfrmq(1e11)
 QCDNUM.setcbt(0, iqc, iqb, 0)
 iq0 = QCDNUM.iqfrmq(q0)
-eps = QCDNUM.evolfg(itype, func_c, def, iq0)
+eps = QCDNUM.evolfg(itype, wrapped_func, def, iq0)
 pdf = QCDNUM.allfxq(itype, x, q, 0, 1)
 asmz, a, b = QCDNUM.asfunc(qmz2)
 csea = 2*pdf[3];

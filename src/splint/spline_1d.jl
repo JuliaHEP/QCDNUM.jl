@@ -42,7 +42,7 @@ end
     ssp_sxfill(iasp, fun, iq)
 
 Fill the 1D x spline object by passing a function. The function 
-must have the signature fun(ix::Integer, iq::Integer, first::Boolean).
+must have the signature fun(ix::Integer, iq::Integer, first::Bool).
 
 # Arguments
 - `iasp::Integer`: address of the spline object
@@ -64,7 +64,7 @@ end
     ssp_sqfill(iasp, fun, ix)
 
 Fill the 1D qq spline object by passing a function. The function 
-must have the signature fun(ix::Integer, iq::Integer, first::Boolean).
+must have the signature fun(ix::Integer, iq::Integer, first::Bool).
 
 # Arguments
 - `iasp::Integer`: address of the spline object
