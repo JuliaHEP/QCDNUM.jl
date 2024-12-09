@@ -8,7 +8,7 @@ function zmfillw()
 
     nwords = Ref{Int32}()
     
-    @ccall zmfillw_(nwords::Ref{Int32})::Nothing
+    @qlccall zmfillw_(nwords::Ref{Int32})::Nothing
     
     nwords[]
 end
@@ -24,7 +24,7 @@ function zmwords()
     ntotal = Ref{Int32}()
     nused = Ref{Int32}()
 
-    @ccall zmwords_(ntotal::Ref{Int32}, nused::Ref{Int32})::Nothing
+    @qlccall zmwords_(ntotal::Ref{Int32}, nused::Ref{Int32})::Nothing
     
     ntotal[], nused[]
 end
@@ -57,7 +57,7 @@ function zmstfun(istf::Integer, def::Array{Float64}, x::Array{Float64},
 
     f = Array{Float64}(undef, n[])
     
-    @ccall zmstfun_(istf::Ref{Int32}, def::Ref{Float64}, x::Ref{Float64},
+    @qlccall zmstfun_(istf::Ref{Int32}, def::Ref{Float64}, x::Ref{Float64},
                     Q2::Ref{Float64}, f::Ref{Float64}, n::Ref{Int32},
                     ichk::Ref{Int32})::Nothing 
     

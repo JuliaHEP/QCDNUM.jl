@@ -15,7 +15,7 @@ function ssp_extrapu(ia, n)
     ia = Ref{Int32}(ia)
     n = Ref{Int32}(n)
 
-    @ccall ssp_extrapu_(ia::Ref{Int32}, n::Ref{Int32})::Nothing
+    @qlccall ssp_extrapu_(ia::Ref{Int32}, n::Ref{Int32})::Nothing
 
     nothing
 end
@@ -37,7 +37,7 @@ function ssp_extrapv(ia, n)
     ia = Ref{Int32}(ia)
     n = Ref{Int32}(n)
 
-    @ccall ssp_extrapv_(ia::Ref{Int32}, n::Ref{Int32})::Nothing
+    @qlccall ssp_extrapv_(ia::Ref{Int32}, n::Ref{Int32})::Nothing
 
     nothing
 end

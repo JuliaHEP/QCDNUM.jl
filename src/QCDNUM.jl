@@ -2,6 +2,7 @@ module QCDNUM
 
 using QCDNUM_jll, Libdl
 
+include("threadsafety.jl")
 include("initialisation.jl")
 include("grid.jl")
 include("weights.jl")

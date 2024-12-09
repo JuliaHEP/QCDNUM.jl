@@ -7,7 +7,7 @@ SPLINT version as a date.
 """
 function isp_spvers()
 
-    ver = @ccall isp_spvers_()::Int32
+    ver = @qlccall isp_spvers_()::Int32
 
     ver[]
 end
@@ -27,7 +27,7 @@ function ssp_spinit(nuser::Integer)
 
     if !_splint_init_complete
         
-        @ccall ssp_spinit_(nuser::Ref{Int32})::Nothing
+        @qlccall ssp_spinit_(nuser::Ref{Int32})::Nothing
 
         global _splint_init_complete = true
 

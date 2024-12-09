@@ -12,7 +12,7 @@ function ssp_uwrite(i::Integer, val::Float64)
     i = Ref{Int32}(i)
     val = Ref{Float64}(val)
 
-    @ccall ssp_uwrite_(i::Ref{Int32}, val::Ref{Float64})::Nothing
+    @qlccall ssp_uwrite_(i::Ref{Int32}, val::Ref{Float64})::Nothing
 
     nothing
 end
@@ -32,7 +32,7 @@ function dsp_uread(i::Integer)
 
     i = Ref{Int32}(i)
 
-    val = @ccall dsp_uread_(i::Ref{Int32})::Float64
+    val = @qlccall dsp_uread_(i::Ref{Int32})::Float64
 
     val[]
 end

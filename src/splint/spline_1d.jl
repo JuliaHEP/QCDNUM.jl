@@ -13,7 +13,7 @@ function isp_sxmake(istepx::Integer)
 
     istepx = Ref{Int32}(istepx)
 
-    iasp = @ccall isp_sxmake_(istepx::Ref{Int32})::Int32
+    iasp = @qlccall isp_sxmake_(istepx::Ref{Int32})::Int32
     
     iasp[]
 end
@@ -33,7 +33,7 @@ function isp_sqmake(istepq::Integer)
 
     istepq = Ref{Int32}(istepq)
 
-    iasp = @ccall isp_sqmake_(istepq::Ref{Int32})::Int32
+    iasp = @qlccall isp_sqmake_(istepq::Ref{Int32})::Int32
     
     iasp[]
 end
@@ -54,7 +54,7 @@ function ssp_sxfill(iasp::Integer, fun::Union{Base.CFunction, Ptr{Nothing}}, iq:
     iasp = Ref{Int32}(iasp)
     iq = Ref{Int32}(iq)
 
-    @ccall ssp_sxfill_(iasp::Ref{Int32}, fun::Ptr{Cvoid},
+    @qlccall ssp_sxfill_(iasp::Ref{Int32}, fun::Ptr{Cvoid},
                        iq::Ref{Int32})::Nothing
 
     nothing
@@ -76,7 +76,7 @@ function ssp_sqfill(iasp::Integer, fun::Union{Base.CFunction, Ptr{Nothing}}, ix:
     iasp = Ref{Int32}(iasp)
     ix = Ref{Int32}(ix)
 
-    @ccall ssp_sqfill_(iasp::Ref{Int32}, fun::Ptr{Cvoid},
+    @qlccall ssp_sqfill_(iasp::Ref{Int32}, fun::Ptr{Cvoid},
                        ix::Ref{Int32})::Nothing
 
     nothing
@@ -105,7 +105,7 @@ function ssp_sxf123(ia::Integer, iset::Integer, def::Array{Float64},
     istf = Ref{Int32}(istf)
     iq = Ref{Int32}(iq)
 
-    @ccall ssp_sxf123_(ia::Ref{Int32}, iset::Ref{Int32},
+    @qlccall ssp_sxf123_(ia::Ref{Int32}, iset::Ref{Int32},
                        def::Ref{Float64}, istf::Ref{Int32},
                        iq::Ref{Int32})::Nothing
 
@@ -134,7 +134,7 @@ function ssp_sqf123(ia::Integer, iset::Integer, def::Array{Float64},
     istf = Ref{Int32}(istf)
     ix = Ref{Int32}(ix)
 
-    @ccall ssp_sqf123_(ia::Ref{Int32}, iset::Ref{Int32},
+    @qlccall ssp_sqf123_(ia::Ref{Int32}, iset::Ref{Int32},
                        def::Ref{Float64}, istf::Ref{Int32},
                        ix::Ref{Int32})::Nothing
 
@@ -160,7 +160,7 @@ function isp_sxuser(xarr::Array{Float64}, nx::Integer)
 
     nx = Ref{Int32}(nx)
 
-    iasp = @ccall isp_sxuser_(xarr::Ref{Float64}, nx::Ref{Int32})::Int32
+    iasp = @qlccall isp_sxuser_(xarr::Ref{Float64}, nx::Ref{Int32})::Int32
 
     iasp[]
 end
@@ -182,7 +182,7 @@ function isp_squser(qarr::Array{Float64}, nq::Integer)
 
     nq = Ref{Int32}(nq)
 
-    iasp = @ccall isp_squser_(qarr::Ref{Float64}, nq::Ref{Int32})::Int32
+    iasp = @qlccall isp_squser_(qarr::Ref{Float64}, nq::Ref{Int32})::Int32
 
     iasp[]
 end
@@ -209,7 +209,7 @@ function dsp_funs1(ia::Integer, u::Float64, ichk::Integer)
     u = Ref{Float64}(u)
     ichk = Ref{Int32}(ichk)
 
-    val = @ccall dsp_funs1_(ia::Ref{Int32}, u::Ref{Float64},
+    val = @qlccall dsp_funs1_(ia::Ref{Int32}, u::Ref{Float64},
                             ichk::Ref{Int32})::Float64
 
     val[]
@@ -229,7 +229,7 @@ function dsp_ints1(ia::Integer, u1::Float64, u2::Float64)
     u1 = Ref{Float64}(u1)
     u2 = Ref{Float64}(u2)
 
-    val = @ccall dsp_ints1_(ia::Ref{Int32}, u1::Ref{Float64},
+    val = @qlccall dsp_ints1_(ia::Ref{Int32}, u1::Ref{Float64},
                             u2::Ref{Float64})::Float64
 
     val[]

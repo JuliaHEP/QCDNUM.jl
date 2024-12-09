@@ -14,7 +14,7 @@ function asfunc(r2::Float64)
     nf = Ref{Int32}()
     ierr = Ref{Int32}()
 
-    alphas = @ccall asfunc_(r2::Ref{Float64}, nf::Ref{Int32},
+    alphas = @qlccall asfunc_(r2::Ref{Float64}, nf::Ref{Int32},
                           ierr::Ref{Int32})::Float64
     
     alphas, nf[], ierr[] 
@@ -44,7 +44,7 @@ function altabn(iset::Integer, iq::Integer, n::Integer)
     
     ierr = Ref{Int32}()
 
-    asn = @ccall altabn_(iset::Ref{Int32}, iq::Ref{Int32}, n::Ref{Int32},
+    asn = @qlccall altabn_(iset::Ref{Int32}, iq::Ref{Int32}, n::Ref{Int32},
                          ierr::Ref{Int32})::Float64
 
     asn[], ierr[]
@@ -74,7 +74,7 @@ function evolfg(itype::Integer, func::Union{Base.CFunction, Ptr{Nothing}}, def::
     iq0 = Ref{Int32}(iq0)
     epsi = Ref{Float64}()
     
-    @ccall evolfg_(itype::Ref{Int32}, func::Ptr{Cvoid}, def::Ref{Float64},
+    @qlccall evolfg_(itype::Ref{Int32}, func::Ptr{Cvoid}, def::Ref{Float64},
                    iq0::Ref{Int32}, epsi::Ref{Float64})::Nothing
 
     epsi[]
@@ -106,7 +106,7 @@ function evsgns(itype::Integer, func::Union{Base.CFunction, Ptr{Nothing}}, isns:
     iq0 = Ref{Int32}(iq0)
     epsi = Ref{Float64}()
     
-    @ccall evsgns_(itype::Ref{Int32}, func::Ptr{Cvoid}, isns::Ref{Int32},
+    @qlccall evsgns_(itype::Ref{Int32}, func::Ptr{Cvoid}, isns::Ref{Int32},
                    n::Ref{Int32}, iq0::Ref{Int32}, epsi::Ref{Float64})::Nothing
 
     epsi[]
@@ -125,7 +125,7 @@ Prototype parallel version on evsgns.
 #     jrun = Ref{Int32}(jrun)
 #     epsi = Ref{Float64}()
     
-#     @ccall evsgnsp_(itype::Ref{Int32}, func::Ptr{Cvoid}, isns::Ref{Int32},
+#     @qlccall evsgnsp_(itype::Ref{Int32}, func::Ptr{Cvoid}, isns::Ref{Int32},
 #                    n::Ref{Int32}, iq0::Ref{Int32}, epsi::Ref{Float64}, jrun::Ref{Int32})::Nothing
 
 #     epsi[]
@@ -141,7 +141,7 @@ function pdfcpy(iset1::Integer, iset2::Integer)
     iset1 = Ref{Int32}(iset1)
     iset2 = Ref{Int32}(iset2)
 
-    @ccall pdfcpy_(iset1::Ref{Int32}, iset2::Ref{Int32})::Nothing
+    @qlccall pdfcpy_(iset1::Ref{Int32}, iset2::Ref{Int32})::Nothing
 
     nothing
 end
@@ -172,7 +172,7 @@ function extpdf(fun::Union{Base.CFunction, Ptr{Nothing}}, iset::Integer, n::Inte
 
     epsi = Ref{Float64}()
     
-    @ccall extpdf_(fun::Ptr{Cvoid}, iset::Ref{Int32}, n::Ref{Int32}, 
+    @qlccall extpdf_(fun::Ptr{Cvoid}, iset::Ref{Int32}, n::Ref{Int32}, 
                    offset::Ref{Float64}, epsi::Ref{Float64})::Nothing
     
     epsi[]    
@@ -205,7 +205,7 @@ function usrpdf(fun::Union{Base.CFunction, Ptr{Nothing}}, iset::Integer, n::Inte
 
     epsi = Ref{Float64}()
     
-    @ccall usrpdf_(fun::Ptr{Cvoid}, iset::Ref{Int32}, n::Ref{Int32}, 
+    @qlccall usrpdf_(fun::Ptr{Cvoid}, iset::Ref{Int32}, n::Ref{Int32}, 
                    offset::Ref{Float64}, epsi::Ref{Float64})::Nothing
     
     epsi[]
@@ -220,7 +220,7 @@ function nptabs(iset::Integer)
 
     iset = Ref{Int32}(iset)
     
-    ntabs = @ccall nptabs_(iset::Ref{Int32})::Int32
+    ntabs = @qlccall nptabs_(iset::Ref{Int32})::Int32
 
     ntabs[]
 end
@@ -234,7 +234,7 @@ function ievtyp(iset::Integer)
 
     iset = Ref{Int32}(iset)
     
-    ityp = @ccall ievtyp_(iset::Ref{Int32})::Int32
+    ityp = @qlccall ievtyp_(iset::Ref{Int32})::Int32
 
     ityp[]
 end

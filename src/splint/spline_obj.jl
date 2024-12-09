@@ -9,7 +9,7 @@ function ssp_erase(ia::Integer)
 
     ia  = Ref{Int32}(ia)
 
-    @ccall ssp_erase_(ia::Ref{Int32})::Nothing
+    @qlccall ssp_erase_(ia::Ref{Int32})::Nothing
 
     nothing
 end
@@ -25,7 +25,7 @@ function isp_spsize(ia::Integer)
 
     ia = Ref{Int32}(ia)
 
-    nw = @ccall isp_spsize_(ia::Ref{Int32})::Int32
+    nw = @qlccall isp_spsize_(ia::Ref{Int32})::Int32
 
     nw[]
 end
@@ -39,7 +39,7 @@ function ssp_spdump(ia::Integer, filename::String)
 
     ia = Ref{Int32}(ia)
 
-    @ccall ssp_spdump_(ia::Ref{Int32}, filename::Ptr{UInt8},
+    @qlccall ssp_spdump_(ia::Ref{Int32}, filename::Ptr{UInt8},
                        sizeof(filename)::Csize_t)::Nothing
 
     nothing
@@ -52,7 +52,7 @@ Read spline from `filename` and return address `ia`.
 """
 function isp_spread(filename::String)
 
-    ia = @ccall isp_spread_(filename::Ptr{UInt8}, sizeof(filename)::Csize_t)::Int32
+    ia = @qlccall isp_spread_(filename::Ptr{UInt8}, sizeof(filename)::Csize_t)::Int32
 
     ia[]
 end
@@ -73,7 +73,7 @@ function ssp_spsetval(ia::Integer, i::Integer, val::Float64)
     i = Ref{Int32}(i)
     val = Ref{Float64}(val)
 
-    @ccall ssp_spsetval_(ia::Ref{Int32}, i::Ref{Int32}, val::Ref{Float64})::Nothing
+    @qlccall ssp_spsetval_(ia::Ref{Int32}, i::Ref{Int32}, val::Ref{Float64})::Nothing
 
     nothing
 end
@@ -95,7 +95,7 @@ function dsp_spgetval(ia::Integer, i::Integer)
     ia = Ref{Int32}(ia)
     i = Ref{Int32}(i)
 
-    val = @ccall dsp_spgetval_(ia::Ref{Int32}, i::Ref{Int32})::Float64
+    val = @qlccall dsp_spgetval_(ia::Ref{Int32}, i::Ref{Int32})::Float64
 
     val[]
 end

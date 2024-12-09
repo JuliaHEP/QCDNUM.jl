@@ -25,7 +25,7 @@ function gxmake(xmin::Array{Float64,1}, iwt::Array{Int32,1}, n::Integer, nxin::I
     iord = Ref{Int32}(iord)
     nxout = Ref{Int32}()
     
-    @ccall gxmake_(xmin::Ref{Float64}, iwt::Ref{Int32}, n::Ref{Int32},
+    @qlccall gxmake_(xmin::Ref{Float64}, iwt::Ref{Int32}, n::Ref{Int32},
                    nxin::Ref{Int32}, nxout::Ref{Int32}, iord::Ref{Int32})::Nothing
     
     nxout[]
@@ -54,7 +54,7 @@ function gqmake(qarr::Array{Float64,1}, wgt::Array{Float64,1}, n::Integer, nqin:
     nqin = Ref{Int32}(nqin)
     nqout = Ref{Int32}()
     
-    @ccall gqmake_(qarr::Ref{Float64}, wgt::Ref{Float64}, n::Ref{Int32},
+    @qlccall gqmake_(qarr::Ref{Float64}, wgt::Ref{Float64}, n::Ref{Int32},
                    nqin::Ref{Int32}, nqout::Ref{Int32})::Nothing
     
     nqout[]
@@ -70,7 +70,7 @@ function ixfrmx(x::Float64)
 
     x = Ref{Float64}(x)
 
-    ix = @ccall ixfrmx_(x::Ref{Float64})::Int32
+    ix = @qlccall ixfrmx_(x::Ref{Float64})::Int32
 
     ix[]    
 end
@@ -84,7 +84,7 @@ function xfrmix(ix::Integer)
 
     ix = Ref{Int32}(ix)
 
-    x = @ccall xfrmix_(ix::Ref{Int32})::Float64
+    x = @qlccall xfrmix_(ix::Ref{Int32})::Float64
 
     x[]    
 end
@@ -102,7 +102,7 @@ function xxatix(x::Float64, ix::Integer)
     x = Ref{Float64}(x)
     ix = Ref{Int32}(ix)
 
-    out = @ccall xxatix_(x::Ref{Float64}, ix::Ref{Int32})::UInt8
+    out = @qlccall xxatix_(x::Ref{Float64}, ix::Ref{Int32})::UInt8
 
     Bool(out[])
 end
@@ -117,7 +117,7 @@ function iqfrmq(q2::Float64)
 
     q2 = Ref{Float64}(q2)
     
-    iq = @ccall iqfrmq_(q2::Ref{Float64})::Int32
+    iq = @qlccall iqfrmq_(q2::Ref{Float64})::Int32
     
     iq
 end
@@ -131,7 +131,7 @@ function qfrmiq(iq::Integer)
 
     iq = Ref{Int32}(iq)
 
-    q2 = @ccall qfrmiq_(iq::Ref{Int32})::Float64
+    q2 = @qlccall qfrmiq_(iq::Ref{Int32})::Float64
 
     q2[]    
 end
@@ -149,7 +149,7 @@ function qqatiq(q::Float64, iq::Integer)
     q = Ref{Float64}(q)
     iq = Ref{Int32}(iq)
 
-    out = @ccall qqatiq_(q::Ref{Float64}, iq::Ref{Int32})::UInt8
+    out = @qlccall qqatiq_(q::Ref{Float64}, iq::Ref{Int32})::UInt8
 
     Bool(out[])
 end
@@ -178,7 +178,7 @@ function grpars()
     qma = Ref{Float64}()
     iord = Ref{Int32}()
 
-    @ccall grpars_(nx::Ref{Int32}, xmi::Ref{Float64}, xma::Ref{Float64},
+    @qlccall grpars_(nx::Ref{Int32}, xmi::Ref{Float64}, xma::Ref{Float64},
                    nq::Ref{Int32}, qmi::Ref{Float64}, qma::Ref{Float64},
                    iord::Ref{Int32})::Nothing
 
@@ -196,7 +196,7 @@ function gxcopy(n::Integer)
     array = Array{Float64}(undef, n[])
     nx = Ref{Int32}()
 
-    @ccall gxcopy_(array::Ref{Float64}, n::Ref{Int32}, nx::Ref{Int32})::Nothing
+    @qlccall gxcopy_(array::Ref{Float64}, n::Ref{Int32}, nx::Ref{Int32})::Nothing
 
     array
 end
@@ -212,7 +212,7 @@ function gqcopy(n::Integer)
     array = Array{Float64}(undef, n[])
     nx = Ref{Int32}()
 
-    @ccall gqcopy_(array::Ref{Float64}, n::Ref{Int32}, nx::Ref{Int32})::Nothing
+    @qlccall gqcopy_(array::Ref{Float64}, n::Ref{Int32}, nx::Ref{Int32})::Nothing
 
     array
 end

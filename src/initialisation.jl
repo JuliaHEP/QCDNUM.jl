@@ -16,7 +16,7 @@ function qcinit(lun::Integer, filename::String)
 
     lun = Ref{Int32}(lun)
  
-    @ccall qcinit_(lun::Ref{Int32}, filename::Ptr{UInt8},
+    @qlccall qcinit_(lun::Ref{Int32}, filename::Ptr{UInt8},
                    sizeof(filename)::Csize_t)::Nothing
     
     nothing
@@ -45,7 +45,7 @@ function setlun(lun::Integer, filename::String)
     
     lun = Ref{Int32}(lun)
 
-    @ccall setlun_(lun::Ref{Int32}, filename::Ptr{UInt8},
+    @qlccall setlun_(lun::Ref{Int32}, filename::Ptr{UInt8},
                    sizeof(filename)::Csize_t)::Nothing
 
     nothing
@@ -63,7 +63,7 @@ function nxtlun(lmin::Integer)
     
     lmin = Ref{Int32}(lmin)
 
-    lun = @ccall nxtlun_(lmin::Ref{Int32})::Int32
+    lun = @qlccall nxtlun_(lmin::Ref{Int32})::Int32
     
     lun[]
 end
@@ -83,7 +83,7 @@ function qstore(action::String, i::Integer, val::Float64)
     i = Ref{Int32}(i)
     val = Ref{Float64}(val)
     
-    @ccall qstore_(action::Ptr{UInt8}, i::Ref{Int32}, val::Ref{Float64},
+    @qlccall qstore_(action::Ptr{UInt8}, i::Ref{Int32}, val::Ref{Float64},
                    sizeof(action)::Csize_t)::Nothing
 
     nothing
@@ -106,7 +106,7 @@ function qstore(action::String, i::Integer)
     i = Ref{Int32}(i)
     val = Ref{Float64}()
     
-    @ccall qstore_(action::Ptr{UInt8}, i::Ref{Int32}, val::Ref{Float64},
+    @qlccall qstore_(action::Ptr{UInt8}, i::Ref{Int32}, val::Ref{Float64},
                    sizeof(action)::Csize_t)::Nothing
 
     val[]
@@ -129,7 +129,7 @@ function setint(param::String, ival::Integer)
 
     ival = Ref{Int32}(ival)
 
-    @ccall setint_(param::Ptr{UInt8}, ival::Ref{Int32},
+    @qlccall setint_(param::Ptr{UInt8}, ival::Ref{Int32},
                    sizeof(param)::Csize_t)::Nothing
 
     nothing
@@ -153,7 +153,7 @@ function getint(param::String)
 
     ival = Ref{Int32}()
 
-    @ccall getint_(param::Ptr{UInt8}, ival::Ref{Int32},
+    @qlccall getint_(param::Ptr{UInt8}, ival::Ref{Int32},
                   sizeof(param)::Csize_t)::Nothing
     
     ival[]
@@ -179,7 +179,7 @@ function setval(param::String, val::Float64)
 
     val = Ref{Float64}(val)
 
-    @ccall setval_(param::Ptr{UInt8}, val::Ref{Float64},
+    @qlccall setval_(param::Ptr{UInt8}, val::Ref{Float64},
                    sizeof(param)::Csize_t)::Nothing
 
     nothing
@@ -208,7 +208,7 @@ function getval(param::String)
 
     val = Ref{Float64}()
 
-    @ccall getval_(param::Ptr{UInt8}, val::Ref{Float64},
+    @qlccall getval_(param::Ptr{UInt8}, val::Ref{Float64},
                    sizeof(param)::Csize_t)::Nothing
 
     val[]

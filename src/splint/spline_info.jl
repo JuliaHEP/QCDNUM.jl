@@ -13,7 +13,7 @@ function isp_splinetype(ia::Integer)
 
     ia = Ref{Int32}(ia)
 
-    type = @ccall isp_splinetype_(ia::Ref{Int32})::Int32
+    type = @qlccall isp_splinetype_(ia::Ref{Int32})::Int32
 
     type[]
 end
@@ -50,7 +50,7 @@ function ssp_splims(ia)
 
     n = Ref{Int32}()
 
-    @ccall ssp_splims_(ia::Ref{Int32}, nu::Ref{Int32}, u1::Ref{Float64},
+    @qlccall ssp_splims_(ia::Ref{Int32}, nu::Ref{Int32}, u1::Ref{Float64},
                        u2::Ref{Float64}, nv::Ref{Int32}, v1::Ref{Float64},
                        v2::Ref{Float64}, n::Ref{Int32})::Nothing
 
@@ -80,7 +80,7 @@ function ssp_unodes(ia::Integer, n::Integer, nu::Integer)
 
     array = Array{Float64}(undef, n[])
 
-    @ccall ssp_unodes_(ia::Ref{Int32}, array::Ref{Float64},
+    @qlccall ssp_unodes_(ia::Ref{Int32}, array::Ref{Float64},
                        n::Ref{Int32}, nu::Ref{Int32})::Nothing
 
     array
@@ -109,7 +109,7 @@ function ssp_vnodes(ia::Integer, n::Integer, nv::Integer)
 
     array = Array{Float64}(undef, n[])
 
-    @ccall ssp_vnodes_(ia::Ref{Int32}, array::Ref{Float64},
+    @qlccall ssp_vnodes_(ia::Ref{Int32}, array::Ref{Float64},
                        n::Ref{Int32}, nv::Ref{Int32})::Nothing
 
     array
@@ -126,7 +126,7 @@ function ssp_nprint(ia::Integer)
 
     ia = Ref{Int32}(ia)
 
-    @ccall ssp_nprint_(ia::Ref{Int32})::Nothing
+    @qlccall ssp_nprint_(ia::Ref{Int32})::Nothing
 
     nothing
 end
@@ -141,7 +141,7 @@ function dsp_rscut(ia::Integer)
 
     ia = Ref{Int32}(ia)
 
-    rsc = @ccall dsp_rscut_(ia::Ref{Int32})::Float64
+    rsc = @qlccall dsp_rscut_(ia::Ref{Int32})::Float64
 
     rsc[]
 end
@@ -155,7 +155,7 @@ function dsp_rsmax(ia::Integer, rsc::Float64)
 
     ia = Ref{Int32}(ia)
 
-    rsc_max = @ccall dsp_rsmax_(ia::Ref{Int32}, rsc::Ref{Float64})::Float64
+    rsc_max = @qlccall dsp_rsmax_(ia::Ref{Int32}, rsc::Ref{Float64})::Float64
 
     rsc_max[]
 end

@@ -15,7 +15,7 @@ function isp_s2make(istepx::Integer, istepq::Integer)
     istepx = Ref{Int32}(istepx)
     istepq = Ref{Int32}(istepq)
 
-    iasp = @ccall isp_s2make_(istepx::Ref{Int32}, istepq::Ref{Int32})::Int32
+    iasp = @qlccall isp_s2make_(istepx::Ref{Int32}, istepq::Ref{Int32})::Int32
     
     iasp[]
 end
@@ -36,11 +36,12 @@ function ssp_s2fill(iasp::Integer, fun::Union{Base.CFunction, Ptr{Nothing}}, rs:
     iasp = Ref{Int32}(iasp)
     rs = Ref{Float64}(rs)
 
-    @ccall ssp_s2fill_(iasp::Ref{Int32}, fun::Ptr{Cvoid},
-                       rs::Ref{Float64})::Nothing
-
+    @qlccall ssp_s2fill_(iasp::Ref{Int32}, fun::Ptr{Cvoid}, rs::Ref{Float64})::Nothing
     nothing
 end
+
+
+
 
 """
     ssp_s2f123(ia, iset, def, istf, rs)
@@ -65,7 +66,7 @@ function ssp_s2f123(ia::Integer, iset::Integer, def::Array{Float64},
     istf = Ref{Int32}(istf)
     rs = Ref{Float64}(rs)
 
-    @ccall ssp_s2f123_(ia::Ref{Int32}, iset::Ref{Int32},
+    @qlccall ssp_s2f123_(ia::Ref{Int32}, iset::Ref{Int32},
                        def::Ref{Float64}, istf::Ref{Int32},
                        rs::Ref{Float64})::Nothing
 
@@ -99,7 +100,7 @@ function isp_s2user(xarr::Array{Float64}, nx::Integer,
     nx = Ref{Int32}(nx)
     nq = Ref{Int32}(nq)
 
-    iasp = @ccall isp_s2user_(xarr::Ref{Float64}, nx::Ref{Int32},
+    iasp = @qlccall isp_s2user_(xarr::Ref{Float64}, nx::Ref{Int32},
                               qarr::Ref{Float64}, nq::Ref{Int32})::Int32
 
     iasp[]
@@ -129,7 +130,7 @@ function dsp_funs2(ia::Integer, x::Float64, q::Float64, ichk::Integer)
     q = Ref{Float64}(q)
     ichk = Ref{Int32}(ichk)
 
-    val = @ccall dsp_funs2_(ia::Ref{Int32}, x::Ref{Float64},
+    val = @qlccall dsp_funs2_(ia::Ref{Int32}, x::Ref{Float64},
                             q::Ref{Float64}, ichk::Ref{Int32})::Float64
 
     val[]
@@ -156,7 +157,7 @@ function dsp_ints2(ia::Integer, x1::Float64, x2::Float64,
     rs = Ref{Float64}(rs)
     np = Ref{Int32}(np)
 
-    val = @ccall dsp_ints2_(ia::Ref{Int32}, x1::Ref{Float64},
+    val = @qlccall dsp_ints2_(ia::Ref{Int32}, x1::Ref{Float64},
                             x2::Ref{Float64}, q1::Ref{Float64},
                             q2::Ref{Float64}, rs::Ref{Float64},
                             np::Ref{Int32})::Float64

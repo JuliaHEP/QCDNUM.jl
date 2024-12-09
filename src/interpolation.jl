@@ -30,7 +30,7 @@ function allfxq(iset::Integer, x::Float64, qmu2::Float64,
         pdf = Array{Float64}(undef, 13, n+1)
     end
     
-    @ccall allfxq_(iset::Ref{Int32}, x::Ref{Float64}, qmu2::Ref{Float64},
+    @qlccall allfxq_(iset::Ref{Int32}, x::Ref{Float64}, qmu2::Ref{Float64},
                    pdf::Ref{Float64}, n::Ref{Int32}, ichk::Ref{Int32})::Nothing
     
     pdf
@@ -68,7 +68,7 @@ function allfij(iset::Integer, ix::Integer, iq::Integer,
         pdf = Array{Float64}(undef, 13, n+1)
     end
     
-    @ccall allfij_(iset::Ref{Int32}, ix::Ref{Int32}, iq::Ref{Int32},
+    @qlccall allfij_(iset::Ref{Int32}, ix::Ref{Int32}, iq::Ref{Int32},
                    pdf::Ref{Float64}, n::Ref{Int32}, ichk::Ref{Int32})::Nothing
     
     pdf
@@ -113,7 +113,7 @@ function sumfxq(iset::Integer, c::Array{Float64}, isel::Integer, x::Float64,
     qmu2 = Ref{Float64}(qmu2)
     ichk = Ref{Int32}(ichk)
 
-    pdf = @ccall sumfxq_(iset::Ref{Int32}, c::Ref{Float64}, isel::Ref{Int32},
+    pdf = @qlccall sumfxq_(iset::Ref{Int32}, c::Ref{Float64}, isel::Ref{Int32},
                          x::Ref{Float64}, qmu2::Ref{Float64},
                          ichk::Ref{Int32})::Float64
     
@@ -158,7 +158,7 @@ function sumfij(iset::Integer, c::Array{Float64}, isel::Integer, ix::Integer,
     iq = Ref{Int32}(iq)
     ichk = Ref{Int32}(ichk)
 
-    pdf = @ccall sumfij_(iset::Ref{Int32}, c::Ref{Float64}, isel::Ref{Int32},
+    pdf = @qlccall sumfij_(iset::Ref{Int32}, c::Ref{Float64}, isel::Ref{Int32},
                          ix::Ref{Int32}, iq::Ref{Int32},
                          ichk::Ref{Int32})::Float64
     
@@ -190,7 +190,7 @@ function bvalij(iset::Integer, id::Integer, ix::Integer, iq::Integer, ichk::Inte
     iq = Ref{Int32}(iq)
     ichk = Ref{Int32}(ichk)
 
-    pdf = @ccall bvalij_(iset::Ref{Int32}, id::Ref{Int32}, ix::Ref{Int32},
+    pdf = @qlccall bvalij_(iset::Ref{Int32}, id::Ref{Int32}, ix::Ref{Int32},
                          iq::Ref{Int32}, ichk::Ref{Int32})::Float64
 
     pdf[]
@@ -221,7 +221,7 @@ function bvalxq(iset::Integer, id::Integer, x::Float64, qq::Float64, ichk::Integ
     q = Ref{Float64}(qq)
     ichk = Ref{Int32}(ichk)
 
-    pdf = @ccall bvalxq_(iset::Ref{Int32}, id::Ref{Int32}, x::Ref{Float64},
+    pdf = @qlccall bvalxq_(iset::Ref{Int32}, id::Ref{Int32}, x::Ref{Float64},
                          qq::Ref{Float64}, ichk::Ref{Int32})::Float64
 
     pdf[]
@@ -253,7 +253,7 @@ function fvalij(iset::Integer, id::Integer, ix::Integer, iq::Integer, ichk::Inte
     iq = Ref{Int32}(iq)
     ichk = Ref{Int32}(ichk)
 
-    pdf = @ccall fvalij_(iset::Ref{Int32}, id::Ref{Int32}, ix::Ref{Int32},
+    pdf = @qlccall fvalij_(iset::Ref{Int32}, id::Ref{Int32}, ix::Ref{Int32},
                          iq::Ref{Int32}, ichk::Ref{Int32})::Float64
 
     pdf[]
@@ -285,7 +285,7 @@ function fvalxq(iset::Integer, id::Integer, x::Float64, qq::Float64, ichk::Integ
     q = Ref{Float64}(qq)
     ichk = Ref{Int32}(ichk)
 
-    pdf = @ccall fvalxq_(iset::Ref{Int32}, id::Ref{Int32}, x::Ref{Float64},
+    pdf = @qlccall fvalxq_(iset::Ref{Int32}, id::Ref{Int32}, x::Ref{Float64},
                          qq::Ref{Float64}, ichk::Ref{Int32})::Float64
 
     pdf[]
@@ -324,7 +324,7 @@ function fflist(iset::Integer, c::Array{Float64}, isel::Integer, x::Array{Float6
     n = Ref{Int32}(n)
     ichk = Ref{Int32}(ichk)
     
-    @ccall fflist_(iset::Ref{Int32}, c::Ref{Float64}, isel::Ref{Int32}, x::Ref{Float64},
+    @qlccall fflist_(iset::Ref{Int32}, c::Ref{Float64}, isel::Ref{Int32}, x::Ref{Float64},
                    q::Ref{Float64}, f::Ref{Float64}, n::Ref{Int32}, ichk::Ref{Int32})::Nothing
     
     f
@@ -358,7 +358,7 @@ function ftable(iset::Integer, c::Array{Float64}, isel::Integer, x::Array{Float6
     nq = Ref{Int32}(nq)
     ichk = Ref{Int32}(ichk)
     
-    @ccall ftable_(iset::Ref{Int32}, c::Ref{Float64}, isel::Ref{Int32},
+    @qlccall ftable_(iset::Ref{Int32}, c::Ref{Float64}, isel::Ref{Int32},
                    x::Ref{Float64}, nx::Ref{Int32}, q::Ref{Float64}, nq::Ref{Int32},
                    table::Ref{Float64}, nx::Ref{Int32}, ichk::Ref{Int32})::Nothing
     
@@ -388,7 +388,7 @@ function splchk(iset::Integer, id::Integer, iq::Integer)
     id = Ref{Int32}(id)
     iq = Ref{Int32}(iq)
 
-    epsi = @ccall splchk_(iset::Ref{Int32}, id::Ref{Int32},
+    epsi = @qlccall splchk_(iset::Ref{Int32}, id::Ref{Int32},
                           iq::Ref{Int32})::Float64
 
     epsi[]
@@ -417,7 +417,7 @@ function fsplne(iset::Integer, id::Integer, x::Float64, iq::Integer)
     x = Ref{Float64}(x)
     iq = Ref{Int32}(iq)
 
-    pdf = @ccall fsplne_(iset::Ref{Int32}, id::Ref{Int32},
+    pdf = @qlccall fsplne_(iset::Ref{Int32}, id::Ref{Int32},
                          x::Ref{Float64}, iq::Ref{Int32})::Float64
    
    pdf[] 

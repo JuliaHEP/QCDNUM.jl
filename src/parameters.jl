@@ -15,7 +15,7 @@ function setord(iord::Integer)
     
     iord = Ref{Int32}(iord)
     
-    @ccall setord_(iord::Ref{Int32})::Nothing
+    @qlccall setord_(iord::Ref{Int32})::Nothing
 
     nothing
 end
@@ -31,7 +31,7 @@ function getord()
 
     iord = Ref{Int32}()
 
-    @ccall getord_(iord::Ref{Int32})::Nothing
+    @qlccall getord_(iord::Ref{Int32})::Nothing
 
     iord[]
 end
@@ -47,7 +47,7 @@ function setalf(alfs::Float64, r2::Float64)
     alfs = Ref{Float64}(alfs)
     r2 = Ref{Float64}(r2)
     
-    @ccall setalf_(alfs::Ref{Float64}, r2::Ref{Float64})::Nothing
+    @qlccall setalf_(alfs::Ref{Float64}, r2::Ref{Float64})::Nothing
     
     nothing
 end
@@ -63,7 +63,7 @@ function getalf()
     alfs = Ref{Float64}()
     r2 = Ref{Float64}()
 
-    @ccall getalf_(alfs::Ref{Float64}, r2::Ref{Float64})::Nothing
+    @qlccall getalf_(alfs::Ref{Float64}, r2::Ref{Float64})::Nothing
 
     alfs[], r2[]
 end
@@ -92,7 +92,7 @@ function setcbt(nfix::Integer, iqc::Integer, iqb::Integer, iqt::Integer)
     iqb = Ref{Int32}(iqb)
     iqt = Ref{Int32}(iqt)
     
-    @ccall setcbt_(nfix::Ref{Int32}, iqc::Ref{Int32},
+    @qlccall setcbt_(nfix::Ref{Int32}, iqc::Ref{Int32},
                    iqb::Ref{Int32}, iqt::Ref{Int32})::Nothing
     
     nothing
@@ -122,7 +122,7 @@ function mixfns(nfix::Integer, r2c::Float64, r2b::Float64, r2t::Float64)
     r2b = Ref{Float64}(r2b)
     r2t = Ref{Float64}(r2t)
 
-    @ccall mixfns_(nfix::Ref{Int32}, r2c::Ref{Float64}, r2b::Ref{Float64},
+    @qlccall mixfns_(nfix::Ref{Int32}, r2c::Ref{Float64}, r2b::Ref{Float64},
                    r2t::Ref{Float64})::Nothing
 
     nothing
@@ -146,7 +146,7 @@ function getcbt()
     q2b = Ref{Float64}()
     q2t = Ref{Float64}()
 
-    @ccall getcbt_(nfix::Ref{Int32}, q2c::Ref{Float64},
+    @qlccall getcbt_(nfix::Ref{Int32}, q2c::Ref{Float64},
                    q2b::Ref{Float64}, q2t::Ref{Float64})::Nothing
     
     nfix[], q2c[], q2b[], q2t[]
@@ -176,7 +176,7 @@ function nfrmiq(iset::Integer, iq::Integer)
 
     ithresh = Ref{Int32}()
 
-    nf = @ccall nfrmiq_(iset::Ref{Int32}, iq::Ref{Int32},
+    nf = @qlccall nfrmiq_(iset::Ref{Int32}, iq::Ref{Int32},
                          ithresh::Ref{Int32})::Int32
 
     nf[], ithresh[]
@@ -195,7 +195,7 @@ function setabr(ar::Float64, br::Float64)
     ar = Ref{Float64}(ar)
     br = Ref{Float64}(br)
 
-    @ccall setabr_(ar::Ref{Float64}, br::Ref{Float64})::Nothing
+    @qlccall setabr_(ar::Ref{Float64}, br::Ref{Float64})::Nothing
 
     nothing
 end
@@ -213,7 +213,7 @@ function getabr()
     ar = Ref{Float64}()
     br = Ref{Float64}()
 
-    @ccall getabr_(ar::Ref{Float64}, br::Ref{Float64})::Nothing
+    @qlccall getabr_(ar::Ref{Float64}, br::Ref{Float64})::Nothing
 
     ar[], br[]
 end
@@ -228,7 +228,7 @@ function rfromf(fscale2::Float64)
 
     fscale2 = Ref{Float64}(fscale2)
 
-    rscale2 = @ccall rfromf_(fscale2::Ref{Float64})::Float64
+    rscale2 = @qlccall rfromf_(fscale2::Ref{Float64})::Float64
 
     rscale2[]
 end
@@ -243,7 +243,7 @@ function ffromr(rscale2::Float64)
 
     rscale2 = Ref{Float64}(rscale2)
 
-    fscale2 = @ccall ffromr_(rscale2::Ref{Float64})::Float64
+    fscale2 = @qlccall ffromr_(rscale2::Ref{Float64})::Float64
 
     fscale2[]
 end
@@ -267,7 +267,7 @@ function setlim(ixmin::Integer, iqmin::Integer, iqmax::Integer)
 
     dum = Ref{Float64}()
     
-    @ccall setlim_(ixmin::Ref{Int32}, iqmin::Ref{Int32},
+    @qlccall setlim_(ixmin::Ref{Int32}, iqmin::Ref{Int32},
                    iqmax::Ref{Int32}, dum::Ref{Float64})::Nothing
     
     nothing
@@ -293,7 +293,7 @@ function getlim(iset::Integer)
 
     dum = Ref{Float64}()
     
-    @ccall getlim_(iset::Ref{Int32}, xmin::Ref{Float64},
+    @qlccall getlim_(iset::Ref{Int32}, xmin::Ref{Float64},
                    qmin::Ref{Float64}, qmax::Ref{Float64},
                    dum::Ref{Float64})::Nothing
 
@@ -337,7 +337,7 @@ function cpypar(iset::Integer)
 
     n = Ref{Int32}(n)
     
-    @ccall cpypar_(array::Ref{Float64}, n::Ref{Int32},
+    @qlccall cpypar_(array::Ref{Float64}, n::Ref{Int32},
                    iset::Ref{Int32})::Nothing
 
     array
@@ -354,7 +354,7 @@ function keypar(iset::Integer)
 
     iset = Ref{Int32}(iset)
 
-    key = @ccall keypar_(iset::Ref{Int32})::Float64
+    key = @qlccall keypar_(iset::Ref{Int32})::Float64
     
     key[]
 end
@@ -380,7 +380,7 @@ function keygrp(iset::Integer, igroup::Integer)
     iset = Ref{Int32}(iset)
     igroup = Ref{Int32}(igroup)
 
-    key = @ccall keygrp_(iset::Ref{Int32}, igroup::Ref{Int32})::Float64
+    key = @qlccall keygrp_(iset::Ref{Int32}, igroup::Ref{Int32})::Float64
     
     key[]
 end
@@ -396,7 +396,7 @@ function usepar(iset::Integer)
 
     iset = Ref{Int32}(iset)
 
-    @ccall usepar_(iset::Ref{Int32})::Nothing
+    @qlccall usepar_(iset::Ref{Int32})::Nothing
     
     nothing
 end
@@ -409,7 +409,7 @@ Push the current parameters to LIFO stack
 """
 function pushcp()
 
-    @ccall pushcp_()::Nothing
+    @qlccall pushcp_()::Nothing
     
 end
 
@@ -421,7 +421,7 @@ Pull the current parameters from LIFO stack
 """
 function pullcp()
 
-    @ccall pullcp_()::Nothing
+    @qlccall pullcp_()::Nothing
     
 end
 

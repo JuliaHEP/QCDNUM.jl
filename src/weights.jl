@@ -17,7 +17,7 @@ function fillwt(itype::Integer)
     idnum1 = Ref{Int32}()
     idnum2 = Ref{Int32}()
     
-    @ccall fillwt_(itype::Ref{Int32}, idnum1::Ref{Int32},
+    @qlccall fillwt_(itype::Ref{Int32}, idnum1::Ref{Int32},
                    idnum2::Ref{Int32}, nwds::Ref{Int32})::Nothing
     
     nwds[]
@@ -33,7 +33,7 @@ function dmpwgt(itype::Integer, lun::Integer, filename::String)
     itype = Ref{Int32}(itype)
     lun = Ref{Int32}(lun)
     
-    @ccall dmpwgt_(itype::Ref{Int32}, lun::Ref{Int32}, filename::Ptr{UInt8},
+    @qlccall dmpwgt_(itype::Ref{Int32}, lun::Ref{Int32}, filename::Ptr{UInt8},
                    sizeof(filename)::Csize_t)::Nothing
     
     nothing
@@ -54,7 +54,7 @@ function readwt(lun::Integer, filename::String)
     idnum1 = Ref{Int32}()
     idnum2 = Ref{Int32}()
     
-    @ccall readwt_(lun::Ref{Int32}, filename::Ptr{UInt8}, idnum1::Ref{Int32},
+    @qlccall readwt_(lun::Ref{Int32}, filename::Ptr{UInt8}, idnum1::Ref{Int32},
                    idnum2::Ref{Int32}, nwds::Ref{Int32}, ierr::Ref{Int32},
                    sizeof(filename)::Csize_t)::Nothing
     
@@ -70,7 +70,7 @@ function wtfile(itype::Integer, filename::String)
 
     itype = Ref{Int32}(itype)
 
-    @ccall wtfile_(itype::Ref{Int32}, filename::Ptr{UInt8},
+    @qlccall wtfile_(itype::Ref{Int32}, filename::Ptr{UInt8},
                    sizeof(filename)::Csize_t)::Nothing
     
     nothing
@@ -91,7 +91,7 @@ function nwused()
 
     ndummy = Ref{Int32}()
     
-    @ccall nwused_(nwtot::Ref{Int32}, nwuse::Ref{Int32},
+    @qlccall nwused_(nwtot::Ref{Int32}, nwuse::Ref{Int32},
                    ndummy::Ref{Int32})::Nothing
 
     nwtot[], nwuse[]
