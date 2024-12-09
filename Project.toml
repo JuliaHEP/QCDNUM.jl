@@ -10,13 +10,8 @@ Parameters = "d96e819e-fc66-5662-9728-84c9c7592b0a"
 QCDNUM_jll = "4f99f0f9-6eee-532a-a65d-722344444835"
 
 [compat]
-julia = "1"
-HDF5 = "0.16"
+HDF5 = "0.16, 0.17"
+Libdl = "1"
 Parameters = "0.12"
-
-[extras]
-Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
-Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
-
-[targets]
-test = ["Test", "Documenter"]
+QCDNUM_jll = "~18.0"
+julia = "1.10"

@@ -8,7 +8,7 @@ The QCDNUM Julia wrapper can be installed either from the GitHub repository via 
 
 In the Julia REPL:
 
-```@repl
+```
 using Pkg
 pkg"add QCDNUM"
 ```

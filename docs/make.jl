@@ -1,8 +1,14 @@
-push!(LOAD_PATH,"../src/")
-
 using Documenter
 using QCDNUM
 using Literate
+
+# Doctest setup
+DocMeta.setdocmeta!(
+    QCDNUM,
+    :DocTestSetup,
+    :(using QCDNUM);
+    recursive=true,
+)
 
 # Generate examples notebooks
 gen_content_dir = joinpath(@__DIR__, "src")
@@ -19,26 +25,28 @@ Literate.markdown(testsgns_src, gen_content_dir, name="testsgns")
 Literate.markdown(timing_src, gen_content_dir, name="timing")
 Literate.markdown(splint_src, gen_content_dir, name="splint")
 
-About = "Introduction" => "index.md"
+Examples1 =  ["example.md", "testsgns.md", "timing.md"]
+Examples2 = ["splint.md"]
 
-Installation = "Installation" => "installation.md"
-
-Quickstart = "Quick start" => "quickstart.md"
-
-Examples1 = "QCDNUM example jobs" => ["example.md", "testsgns.md",
-                                      "timing.md"]
-
-Examples2 = "Further examples" => ["splint.md"]
-
-Functions = "Available functions" => "functions.md"
-
-Notebooks = "Notebook tutorial" => "notebook.md"
-
-PAGES = [About, Installation, Notebooks, Quickstart, Examples1, Examples2, Functions]
-
-makedocs(modules=[QCDNUM], sitename="QCDNUM.jl", pages=PAGES)
+makedocs(
+    sitename="QCDNUM.jl",
+    modules=[QCDNUM],
+    pages = [
+        "Introduction" => "index.md",
+        "Installation" => "installation.md",
+        "Notebook tutorial" => "notebook.md",
+        "Quick start" => "quickstart.md",
+        "QCDNUM example jobs" => Examples1,
+        "Further examples" => Examples2,
+        "Available functions" => "functions.md",
+   ],
+    doctest = ("fixdoctests" in ARGS) ? :fix : true,
+    linkcheck = false, # Nikhef QCDNUM web links may be down
+    warnonly = ("nonstrict" in ARGS),
+)
 
 deploydocs(
-    devbranch = "main",
     repo = "github.com/cescalara/QCDNUM.jl.git",
+    forcepush = true,
+    push_preview = true,
 )
