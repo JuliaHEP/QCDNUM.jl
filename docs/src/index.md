@@ -14,7 +14,7 @@ QCDNUM.jl is a Julia wrapper for Michiel Botje's [QCDNUM](https://www.nikhef.nl/
 
 **Are you a long-time user of QCDNUM in Fortran or C++?** All the standard QCDNUM functions have corresponding Julia versions. So, translating your old code or starting a new project should be a quick and intuitive! Check out the **QCDNUM example jobs**. These are Julia versions of the test jobs of the original QCDNUM. 
 
-The source code, along with Julia scripts for all examples can be found in the [GitHub repository](https://github.com/cescalara/QCDNUM.jl).
+The source code, along with Julia scripts for all examples can be found in the [GitHub repository](https://github.com/JuliaHEP/QCDNUM.jl).
 
 This documentation gives an overview of the Julia implementation. More details can be found in the [QCDNUM docs](https://www.nikhef.nl/~h24/qcdnum/).
 

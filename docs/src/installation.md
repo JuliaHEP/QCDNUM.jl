@@ -17,7 +17,7 @@ pkg"add QCDNUM"
 
 - Clone the github repository, e.g. via the command line:
 ```
-git clone  https://github.com/cescalara/QCDNUM.jl.git
+git clone  https://github.com/JuliaHEP/QCDNUM.jl.git
 ```
 
 - Enter the directory and start Julia interpreter

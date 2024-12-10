@@ -47,7 +47,7 @@ makedocs(
 )
 
 deploydocs(
-    repo = "github.com/cescalara/QCDNUM.jl.git",
+    repo = "github.com/JuliaHEP/QCDNUM.jl.git",
     forcepush = true,
     push_preview = true,
 )

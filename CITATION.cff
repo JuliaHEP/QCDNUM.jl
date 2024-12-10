@@ -6,7 +6,7 @@ authors:
     orcid: "https://orcid.org/0000-0002-1153-2139"
 title: "QCDNUM.jl"
 version: 0.2.0
-url: "https://github.com/cescalara/QCDNUM.jl"
+url: "https://github.com/JuliaHEP/QCDNUM.jl"
 preferred-citation:
   type: article
   authors:
