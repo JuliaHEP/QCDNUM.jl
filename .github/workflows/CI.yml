@@ -33,9 +33,9 @@ jobs:
         arch:
           - x64
         include:
-          - version: 1
-            os: ubuntu-latest
-            arch: x86
+          # - version: 1
+          #   os: ubuntu-latest
+          #   arch: x86
           - version: 1
             os: macOS-latest
             arch: x64
