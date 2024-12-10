@@ -1,6 +1,7 @@
 using Documenter
 using QCDNUM
 using Literate
+import HDF5
 
 # Doctest setup
 DocMeta.setdocmeta!(

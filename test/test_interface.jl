@@ -1,6 +1,8 @@
 using QCDNUM
 using Test
 
+import HDF5
+
 include("pdf_functions.jl")
 
 @testset "Initialisation" begin

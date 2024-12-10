@@ -1,5 +1,4 @@
 using Parameters
-using HDF5
 
 export GridParams, EvolutionParams
 export SPLINTParams
@@ -202,117 +201,50 @@ function splint_init(splint_params::SPLINTParams)
     nothing
 end
 
+
 """
-    save_params(file_name, params)
+    QCDNUM.save_params(file_name::String, params::Union{EvolutionParams,SPLINTParams})
+    QCDNUM.save_params(::Type{HDF5.File}, file_name::String, params::Union{EvolutionParams,SPLINTParams})
+    QCDNUM.save_params(trg::HDF5.H5DataStore, params::Union{EvolutionParams,SPLINTParams})
  
 Store the QCDNUM or SPLINT parameters for reproducibility.
 """
+function save_params end
+
 function save_params(file_name::String, params::Union{EvolutionParams,SPLINTParams})
-
-    # Append if file already exists
-    local open_mode
-    if isfile(file_name)
-        open_mode = "r+"
-    else
-        open_mode = "w"
-    end
-
-    # Save
-    h5open(file_name, open_mode) do fid
-
-        param_group = create_group(fid, params.label)
-
-        for name in fieldnames(typeof(params))
-
-            sub_thing = getfield(params, name)
-
-            if length(fieldnames(typeof(sub_thing))) > 0
-
-                sub_group = create_group(param_group, String(name))
-
-                for sub_name in fieldnames(typeof(sub_thing))
-
-                    sub_group[String(sub_name)] = getfield(sub_thing, sub_name)
-
-                end
-
-            else
-
-                param_group[String(name)] = sub_thing
-
-            end
-
-        end
-
-    end
-
-    return nothing
+    save_params(_io_type(_io_format(file_name)), file_name::String, params::Union{EvolutionParams,SPLINTParams})
 end
 
 
 """
-    load_params(file_name)
+    QCDNUM.load_params(file_name::String)
+    QCDNUM.load_params(::Type{HDF5.File}, file_name::String)
+    QCDNUM.load_params(src::HDF5.H5DataStore)
 
 Load stored QCDNUM or SPLINT parameters.
 """
+function load_params end
+
 function load_params(file_name::String)
+    load_params(_io_type(_io_format(file_name)), file_name)
+end
 
-    local params_dict = Dict{String,Any}()
-    local params
 
-    h5open(file_name, "r") do fid
-
-        # Check what is in here
-        for key in keys(fid)
-
-            if key == "evolution_params"
-
-                # Rebuild grid
-                g = fid["evolution_params/grid_params"]
-
-                grid_params = GridParams(x_min=read(g["x_min"]), x_weights=read(g["x_weights"]),
-                    x_num_bounds=read(g["x_num_bounds"]), nx=read(g["nx"]),
-                    qq_bounds=read(g["qq_bounds"]), qq_weights=read(g["qq_weights"]),
-                    qq_num_bounds=read(g["qq_num_bounds"]), nq=read(g["nq"]),
-                    spline_interp=read(g["spline_interp"]))
-
-                # Rebuild evolution params
-                g = fid["evolution_params"]
-                params = EvolutionParams(order=read(g["order"]), α_S=read(g["α_S"]),
-                    q0=read(g["q0"]), grid_params=grid_params,
-                    n_fixed_flav=read(g["n_fixed_flav"]),
-                    iqc=read(g["iqc"]), iqb=read(g["iqb"]),
-                    iqt=read(g["iqt"]), weight_type=read(g["weight_type"]),
-                    output_pdf_loc=read(g["output_pdf_loc"]))
-
-            elseif key == "splint_params"
-
-                # Rebuild spline addresses
-                g = fid["splint_params/spline_addresses"]
-                spline_addresses = SplineAddresses(F2up=read(g["F2up"]), F2dn=read(g["F2dn"]),
-                    F3up=read(g["F3up"]), F3dn=read(g["F3dn"]),
-                    FLup=read(g["FLup"]), FLdn=read(g["FLdn"]),
-                    F_eP=read(g["F_eP"]), F_eM=read(g["F_eM"]))
-
-                # Rebuild splint_params
-                g = fid["splint_params"]
-                params = SPLINTParams(nuser=read(g["nuser"]), nsteps_x=read(g["nsteps_x"]),
-                    nsteps_q=read(g["nsteps_q"]), nnodes_x=read(g["nnodes_x"]),
-                    nnodes_q=read(g["nnodes_q"]), rs=read(g["rs"]), rscut=read(g["rscut"]),
-                    spline_addresses=spline_addresses)
-
-            else
-
-                @error "Contents of file not recognised."
-
-            end
-
-            params_dict[key] = params
-
-        end
-
+function _io_format(filename::AbstractString)
+    fbase = basename(filename)
+    if endswith(fbase, ".hdf5") || endswith(fbase, ".h5")
+        return Val(:hdf5)
+    else
+        file_ext = split(fbase, ".")[begin+1:end][end]
+        return Val(Symbol(file_ext))
     end
+end
 
-    return params_dict
 
+function _io_type(::Val{format}) where format
+    if format == :hdf5
+        return throw(ErrorException("QCDNUM HDF5 I/O not available, package HDF5 must be loaded, e.g. via `import HDF5`."))
+    else
+        return throw(ArgumentError("IO format $format not supported."))
+    end
 end
