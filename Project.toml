@@ -1,7 +1,7 @@
 name = "QCDNUM"
 uuid = "4acc4d78-9ad5-435b-99b1-7af0628e6e5b"
 authors = ["Francesca Capel <capel.francesca@gmail.com> and contributors"]
-version = "0.2.1"
+version = "0.3.0"
 
 [deps]
 FunctionWrappers = "069b7b12-0de2-55c6-9aab-29f3d0a68a2e"
