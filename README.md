@@ -1,10 +1,11 @@
 # QCDNUM.jl
 
-[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://francescacapel.com/QCDNUM.jl/stable)
-[![](https://img.shields.io/badge/docs-dev-blue.svg)](https://francescacapel.com/QCDNUM.jl/dev/) 
-![CI](https://github.com/JuliaHEP/QCDNUM.jl/actions/workflows/Tests.yml/badge.svg)
-[![codecov](https://codecov.io/gh/JuliaHEP/QCDNUM.jl/branch/main/graph/badge.svg?token=S6Y4SMO34D)](https://codecov.io/gh/JuliaHEP/QCDNUM.jl)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Documentation for stable version](https://img.shields.io/badge/docs-stable-blue.svg)](https://JuliaHEP.github.io/QCDNUM.jl/stable)
+[![Documentation for development version](https://img.shields.io/badge/docs-dev-blue.svg)](https://JuliaHEP.github.io/QCDNUM.jl/dev)
+[![License](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE.md)
+[![Build Status](https://github.com/JuliaHEP/QCDNUM.jl/workflows/CI/badge.svg)](https://github.com/JuliaHEP/QCDNUM.jl/actions/workflows/CI.yml)
+[![Codecov](https://codecov.io/gh/JuliaHEP/QCDNUM.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/JuliaHEP/QCDNUM.jl)
+[![Aqua QA](https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg)](https://github.com/JuliaTesting/Aqua.jl)
 
 Fast QCD evolution and convolution.
 
