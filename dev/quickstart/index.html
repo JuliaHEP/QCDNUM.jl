@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Quick start · QCDNUM.jl</title><meta name="title" content="Quick start · QCDNUM.jl"/><meta property="og:title" content="Quick start · QCDNUM.jl"/><meta property="twitter:title" content="Quick start · QCDNUM.jl"/><meta name="description" content="Documentation for QCDNUM.jl."/><meta property="og:description" content="Documentation for QCDNUM.jl."/><meta property="twitter:description" content="Documentation for QCDNUM.jl."/><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../search_index.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">QCDNUM.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../">Introduction</a></li><li><a class="tocitem" href="../installation/">Installation</a></li><li><a class="tocitem" href="../notebook/">Notebook tutorial</a></li><li class="is-active"><a class="tocitem" href>Quick start</a></li><li><span class="tocitem">QCDNUM example jobs</span><ul><li><a class="tocitem" href="../example/">QCDNUM example program</a></li><li><a class="tocitem" href="../testsgns/">Test QCDNUM evolution options</a></li><li><a class="tocitem" href="../timing/">Timing evolution and structure function evaluation</a></li></ul></li><li><span class="tocitem">Further examples</span><ul><li><a class="tocitem" href="../splint/">SPLINT package example</a></li></ul></li><li><a class="tocitem" href="../functions/">Available functions</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Quick start</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Quick start</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/JuliaHEP/QCDNUM.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/JuliaHEP/QCDNUM.jl/blob/main/examples/quickstart.jl" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Quick-start"><a class="docs-heading-anchor" href="#Quick-start">Quick start</a><a id="Quick-start-1"></a><a class="docs-heading-anchor-permalink" href="#Quick-start" title="Permalink"></a></h1><p>An overview of the functionality in QCDNUM.jl</p><pre><code class="language-julia hljs">using QCDNUM</code></pre><p>Before we do anything with QCDNUM.jl, we need to initialise the QCDNUM workspace.</p><pre><code class="language-julia hljs">QCDNUM.init(banner=true)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">
+                  ///                                  .().
+                 (..)                                  (--)
+  +----------ooO--()--Ooo--------------------------ooO------Ooo---------+
+  |                                                                     |
+  |    #####      ######    ######     ##    ##   ##    ##   ##     ##  |
+  |   ##   ##    ##    ##   ##   ##    ###   ##   ##    ##   ###   ###  |
+  |  ##     ##   ##    ##   ##    ##   ####  ##   ##    ##   #### ####  |
+  |  ##     ##   ##         ##    ##   ## ## ##   ##    ##   ## ### ##  |
+  |  ##     ##   ##         ##    ##   ##  ####   ##    ##   ##  #  ##  |
+  |   ##   ##    ##    ##   ##   ##    ##   ###   ##    ##   ##     ##  |
+  |    #####      ######    ######     ##    ##    ######    ##     ##  |
+  |        ##                                                           |
+  |                                                                     |
+  |    Version 18-00-00    08-03-22         Author m.botje@nikhef.nl    |
+  |                                                                     |
+  +---------------------------------------------------------------------+
+
+
+  +---------------------------------------------------------------------+
+  |                                                                     |
+  |    If you use QCDNUM, please refer to:                              |
+  |                                                                     |
+  |    M. Botje, Comput. Phys. Commun. 182(2011)490, arXiV:1005.1481    |
+  |                                                                     |
+  +---------------------------------------------------------------------+</code></pre><p>Most likely we are using QCDNUM because we want to evolve a parton distribution function (PDF) over different energy scales.</p><p>To do this, we will first need to specify the form of the input PDF at some initial energy scale. The form of the input PDF can be specified by a function together with a mapping array which tells QCDNUM the ordering of the quark species.</p><p>Let&#39;s take a look with an example PDF function:</p><pre><code class="language-julia hljs">function input_pdf_func(ipdf, x)::Float64
+
+    # De-reference pointers
+    i = ipdf[]
+    xb = x[]
+
+    adbar = 0.1939875
+    f = 0
+
+    if (i == 0) # gluon is always i=0
+        ag = 1.7
+        f = ag * xb^-0.1 * (1.0 - xb)^5.0
+    end
+    if (i == 1) # down valence
+        ad = 3.064320
+        f = ad * xb^0.8 * (1.0 - xb)^4.0
+    end
+    if (i == 2) # up valence
+        au = 5.107200
+        f = au * xb^0.8 * (1.0 - xb)^3.0
+    end
+    if (i == 3) # strange
+        f = 0.0
+    end
+    if (i == 4) # down sea, dbar
+        f = adbar * xb^-0.1 * (1.0 - xb)^6.0
+    end
+    if (i == 5) # up sea, ubar
+        f = adbar * xb^-0.1 * (1.0 - xb)^6.0 * (1.0 - xb)
+    end
+    if (i == 6) # anti-strange, sbar
+        xdbar = adbar * xb^-0.1 * (1.0 - xb)^6.0
+        xubar = adbar * xb^-0.1 * (1.0 - xb)^6.0 * (1.0 - xb)
+        f = 0.2 * (xdbar + xubar)
+    end
+    if (i &gt;= 7) # charm, anti-charm and heavier...
+        f = 0.0
+    end
+
+    return f
+end</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">input_pdf_func (generic function with 1 method)</code></pre><p>The signature of this function is fixed by the QCDNUM interface. We also need to define the ordering, and tell QCDNUM that <code>i=1</code> corresponds to the down valence component, etc. We use the following map, where the rows represent the contribution from the different quark species and the columns represent the <code>ipdf</code> value in the above function, from 1 to 12.</p><pre><code class="language-julia hljs">map = Float64.([
+    #   tb  bb  cb  sb  ub  db   g   d   u   s   c   b   t
+    0, 0, 0, 0, -1, 0, 0, 0, 1, 0, 0, 0, 0, # 1 # U valence
+    0, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0, 0, # 2 # D valence
+    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, # 3 # u sea
+    0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, # 4 # d sea
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, # 5 # s
+    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, # 6 # sbar
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, # 7 # c
+    0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, # 8 # cbar
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, # 9 # b
+    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, # 10 # bbar
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, # 11
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0  # 12
+])</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">156-element Vector{Float64}:
+  0.0
+  0.0
+  0.0
+  0.0
+ -1.0
+  0.0
+  0.0
+  0.0
+  1.0
+  0.0
+  ⋮
+  0.0
+  0.0
+  0.0
+  0.0
+  0.0
+  0.0
+  0.0
+  0.0
+  0.0</code></pre><p>We can see that many possible PDF parametrisations are possible with this framework. QCDNUM.jl provides a simple interface, <code>QCDNUM.InputPDF</code> to keep track of these two components and handle the lower-level interface between julia and QCDNUM.</p><pre><code class="language-julia hljs">input_pdf = QCDNUM.InputPDF(func=input_pdf_func, map=map)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">QCDNUM.InputPDF{typeof(Main.input_pdf_func)}(Main.input_pdf_func, [0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 1.0, 0.0  …  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], FunctionWrappers.FunctionWrapper{Float64, Tuple{Int32, Float64}}(Ptr{Nothing} @0x00007f9eecdbe380, Ptr{Nothing} @0x00007f9ee1b60040, Base.RefValue{typeof(Main.input_pdf_func)}(Main.input_pdf_func), typeof(Main.input_pdf_func)))</code></pre><p>To evolve this input scale, we need to define a number of evolution parameters, handled by the <code>QCDNUM.EvolutionParams</code> interface.</p><pre><code class="language-julia hljs">fieldnames(QCDNUM.EvolutionParams)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">(:label, :order, :α_S, :q0, :grid_params, :n_fixed_flav, :iqc, :iqb, :iqt, :weight_type, :output_pdf_loc)</code></pre><p>We can check the documentation for more info on the different fields and their default values, e.g.:</p><p><code>?QCDNUM.EvolutionParams.order</code></p><p><code>?QCDNUM.EvolutionParams.α_S</code></p><p>Here, let&#39;s work with the default values. This means that out input PDF is defined for a starting scale of <code>evolution_params.q0</code> with a coupling constant of <code>evolution_params.α_S</code></p><pre><code class="language-julia hljs">evolution_params = QCDNUM.EvolutionParams()</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">EvolutionParams
+  label: String &quot;evolution_params&quot;
+  order: Int64 3
+  α_S: Float64 0.364
+  q0: Float64 2.0
+  grid_params: GridParams
+  n_fixed_flav: Int64 0
+  iqc: Int64 3
+  iqb: Int64 15
+  iqt: Int64 0
+  weight_type: Int64 1
+  output_pdf_loc: Int64 1
+</code></pre><p>Another important aspect that needs to be defined is the grid of <code>x</code> (fractional momentum) and <code>q2</code> (energy resolution scale) values. For this we have <code>QCDNUM.GridParams</code>, but the default values have already been set up in <code>evolution_params.grid_params</code>.</p><pre><code class="language-julia hljs">evolution_params.grid_params</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">GridParams
+  x_min: Array{Float64}((1,)) [0.0001]
+  x_weights: Array{Int32}((1,)) Int32[1]
+  x_num_bounds: Int64 1
+  nx: Int64 100
+  qq_bounds: Array{Float64}((2,)) [2.0, 10000.0]
+  qq_weights: Array{Float64}((2,)) [1.0, 1.0]
+  qq_num_bounds: Int64 2
+  nq: Int64 50
+  spline_interp: Int64 3
+</code></pre><p>Let&#39;s just stick with these for now. More details on the other parameters can be found in the documentation.</p><p>Now, we have everything we need to evolve the PDF over the specified grid. This is all taken care of with the <code>QCDNUM.evolve</code> function.</p><pre><code class="language-julia hljs">ϵ = QCDNUM.evolve(input_pdf, evolution_params)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">0.0032556878845878337</code></pre><p>This function takes care of all the necessary steps and returns <code>ϵ</code>, which quantifies the deviation due to the interpolation between grid points, and gives a sense of the accuracy of the approximation. If <code>ϵ &gt; 0.1</code>, QCDNUM will report an error.</p><p>We can now access and plot the evolved PDF at the scale of our choice.</p><pre><code class="language-julia hljs">q2 = 300.0 # GeV^2
+n_additional_pdfs = 0
+err_check_flag = 1 # Run with error checking
+
+x_grid = range(1e-3, stop=1, length=100)
+itype = evolution_params.output_pdf_loc
+
+# Select pdf with index according to above definition
+# NB -&gt; in Julia indexing starts from 1
+g_pdf = [QCDNUM.allfxq(itype, x, q2, n_additional_pdfs, err_check_flag)[1] for x in x_grid]
+dv_pdf = [QCDNUM.allfxq(itype, x, q2, n_additional_pdfs, err_check_flag)[2] for x in x_grid]
+uv_pdf = [QCDNUM.allfxq(itype, x, q2, n_additional_pdfs, err_check_flag)[3] for x in x_grid]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">100-element Vector{Float64}:
+  0.7254373387396187
+  0.21295633368407588
+  0.13678926456211357
+  0.10004602485530516
+  0.07756434817286102
+  0.06218984457669233
+  0.050970109878917286
+  0.04242647279524406
+  0.03572272299131027
+  0.030344744739328636
+  ⋮
+  9.38188291635454e-10
+ -3.86225846574294e-9
+ -7.238817043638397e-9
+ -9.236494438837906e-9
+ -9.898563645510764e-9
+ -9.26664578533939e-9
+ -7.3807875914441435e-9
+ -4.2795345525668e-9
+  0.0</code></pre><p>Let&#39;s also compare these with those from the input PDFs at the starting scale</p><pre><code class="language-julia hljs">using Plots
+
+q0 = evolution_params.q0
+p1 = plot(x_grid, [input_pdf.func(0, x) for x in x_grid], label=&quot;x g(x) - Q2 = $q0&quot;,
+    lw=3, linestyle=:dash, alpha=0.5, color=:black)
+plot!(x_grid, [input_pdf.func(1, x) for x in x_grid], label=&quot;x dv(x) - Q2 = $q0&quot;,
+    lw=3, linestyle=:dash, alpha=0.5, color=:red)
+plot!(x_grid, [input_pdf.func(2, x) for x in x_grid], label=&quot;x uv(x) - Q2 = $q0&quot;,
+    lw=3, linestyle=:dash, alpha=0.5, color=:green)
+
+p2 = plot(x_grid, g_pdf, label=&quot;x g(x) - Q2 = $q2&quot;, lw=3, color=:black)
+plot!(x_grid, dv_pdf, label=&quot;x dv(x) - Q2 = $q2&quot;, lw=3, color=:red)
+plot!(x_grid, uv_pdf, label=&quot;x uv(x) - Q2 = $q2&quot;, lw=3, color=:green)
+
+plot(p1, p2, layout=(1, 2), xlabel=&quot;x&quot;)</code></pre><img src="626a6b76.svg" alt="Example block output"/><p>We can also save the QCDNUM setup that we used here for later use:</p><pre><code class="language-julia hljs">QCDNUM.save_params(&quot;my_qcdnum_params.h5&quot;, evolution_params)</code></pre><p>Of course, these can be then be loaded back:</p><pre><code class="language-julia hljs">g = QCDNUM.load_params(&quot;my_qcdnum_params.h5&quot;)
+g[&quot;evolution_params&quot;]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">EvolutionParams
+  label: String &quot;evolution_params&quot;
+  order: Int64 3
+  α_S: Float64 0.364
+  q0: Float64 2.0
+  grid_params: GridParams
+  n_fixed_flav: Int64 0
+  iqc: Int64 3
+  iqb: Int64 15
+  iqt: Int64 0
+  weight_type: Int64 1
+  output_pdf_loc: Int64 1
+</code></pre><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../notebook/">« Notebook tutorial</a><a class="docs-footer-nextpage" href="../example/">QCDNUM example program »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.8.0 on <span class="colophon-date" title="Tuesday 10 December 2024 21:26">Tuesday 10 December 2024</span>. Using Julia version 1.11.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

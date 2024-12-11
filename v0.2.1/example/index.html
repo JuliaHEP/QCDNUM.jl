@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>QCDNUM example program · QCDNUM.jl</title><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">QCDNUM.jl</a></span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Introduction</a></li><li><a class="tocitem" href="../installation/">Installation</a></li><li><a class="tocitem" href="../notebook/">Notebook tutorial</a></li><li><a class="tocitem" href="../quickstart/">Quick start</a></li><li><span class="tocitem">QCDNUM example jobs</span><ul><li class="is-active"><a class="tocitem" href>QCDNUM example program</a></li><li><a class="tocitem" href="../testsgns/">Test QCDNUM evolution options</a></li><li><a class="tocitem" href="../timing/">Timing evolution and structure function evaluation</a></li></ul></li><li><span class="tocitem">Further examples</span><ul><li><a class="tocitem" href="../splint/">SPLINT package example</a></li></ul></li><li><a class="tocitem" href="../functions/">Available functions</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">QCDNUM example jobs</a></li><li class="is-active"><a href>QCDNUM example program</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>QCDNUM example program</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/cescalara/QCDNUM.jl/blob/main/examples/example.jl" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="QCDNUM-example-program"><a class="docs-heading-anchor" href="#QCDNUM-example-program">QCDNUM example program</a><a id="QCDNUM-example-program-1"></a><a class="docs-heading-anchor-permalink" href="#QCDNUM-example-program" title="Permalink"></a></h1><p>Based on <code>example.f</code> detailed <a href="https://www.nikhef.nl/~h24/qcdnum-files/testjobs1701/example.f">here</a>.</p><pre><code class="language-julia hljs">using QCDNUM
+using Printf</code></pre><p>Let&#39;s define some useful inputs</p><pre><code class="language-julia hljs">xmin = Float64.([1.0e-4])
+iwt = Int32.([1])
+ng = 1
+nxin = 100
+iosp = 3
+nx = 10
+
+qq = Float64.([2e0, 1e4])
+wt = Float64.([1e0, 1e0])
+nq = 1
+nqin = 60
+ngq = 2
+itype = 1
+
+as0 = 0.364
+r20 = 2.0
+
+q2c = 3.0
+q2b = 25.0
+q0 = 2.0
+iqt = 999
+
+def = Float64.([0., 0., 0., 0., 0.,-1., 0., 1., 0., 0., 0., 0., 0.,
+                0., 0., 0., 0.,-1., 0., 0., 0., 1., 0., 0., 0., 0.,
+                0., 0., 0.,-1., 0., 0., 0., 0., 0., 1., 0., 0., 0.,
+                0., 0., 0., 0., 0., 1., 0., 0., 0., 0., 0., 0., 0.,
+                0., 0., 0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0.,
+                0., 0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
+                0., 0.,-1., 0., 0., 0., 0., 0., 0., 0., 1., 0., 0.,
+                0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
+                0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
+                0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
+                0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
+                0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]);
+
+nfin = 0
+x = 1.0e-3
+q = 1.0e3
+pdf = Array{Float64}(undef, 13)
+qmz2 = 8315.25;</code></pre><p>Now, we can define the input PDF function for the PDF we would like to evolve. We also then have to use the Julia <code>@cfunction</code> macro so that we can pass it to QCDNUM through the wrapper.</p><pre><code class="language-julia hljs">function func(ipdf, x)::Float64
+    i = ipdf[]
+    xb = x[]
+    adbar = 0.1939875
+    f = 0
+    if (i == 0)
+        ag = 1.7
+        f = ag * xb^-0.1 * (1.0-xb)^5.0
+    end
+    if (i == 1)
+        ad = 3.064320
+        f = ad * xb^0.8 * (1.0-xb)^4.0
+    end
+    if (i == 2)
+        au = 5.107200
+        f = au * xb^0.8 * (1.0-xb)^3.0
+    end
+    if (i == 3)
+        f = 0.0
+    end
+    if (i == 4)
+        f = adbar * xb^-0.1 * (1.0-xb)^6.0
+    end
+    if (i == 5)
+        f = adbar * xb^-0.1 * (1.0-xb)^6.0 * (1.0-xb)
+    end
+    if (i == 6)
+        xdbar = adbar * xb^-0.1 * (1.0-xb)^6.0
+        xubar = adbar * xb^-0.1 * (1.0-xb)^6.0 * (1.0-xb)
+        f = 0.2 * (xdbar + xubar)
+    end
+    if (i == 7)
+        f = 0.0
+    end
+    if (i == 8)
+        f = 0.0
+    end
+    if (i == 9)
+        f = 0.0
+    end
+    if (i == 10)
+        f = 0.0
+    end
+    if (i == 11)
+        f = 0.0
+    end
+    if (i == 12)
+        f = 0.0
+    end
+    return f
+end
+
+func_c = @cfunction(func, Float64, (Ref{Int32}, Ref{Float64}))</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Ptr{Nothing} @0x00007ff0ddf96e60</code></pre><p>Next, let&#39;s initialise QCDNUM and run QCDNUM to evolve the PDF.</p><pre><code class="language-julia hljs">QCDNUM.qcinit(-6, &quot; &quot;)
+nx = QCDNUM.gxmake(xmin, iwt, ng, nxin, iosp)
+nq = QCDNUM.gqmake(qq, wt, ngq, nqin)
+nw = QCDNUM.fillwt(itype)
+QCDNUM.setord(3)
+QCDNUM.setalf(as0, r20)
+iqc = QCDNUM.iqfrmq(q2c)
+iqb = QCDNUM.iqfrmq(q2b)
+iqt = QCDNUM.iqfrmq(1e11)
+QCDNUM.setcbt(0, iqc, iqb, 0)
+iq0 = QCDNUM.iqfrmq(q0)
+eps = QCDNUM.evolfg(itype, func_c, def, iq0)
+pdf = QCDNUM.allfxq(itype, x, q, 0, 1)
+asmz, a, b = QCDNUM.asfunc(qmz2)
+csea = 2*pdf[3];</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">  +---------------------------------------------------------------------+
+  |                                                                     |
+  |    If you use QCDNUM, please refer to:                              |
+  |                                                                     |
+  |    M. Botje, Comput. Phys. Commun. 182(2011)490, arXiV:1005.1481    |
+  |                                                                     |
+  +---------------------------------------------------------------------+
+
+
+ FILLWT: start unpolarised weight calculations
+ Subgrids    1 Subgrid points  100
+ Pij LO
+ Pij NLO
+ Pij NNLO
+ Aij LO
+ Aij NLO
+ Aij NNLO
+ FILLWT: weight calculations completed</code></pre><p>Now, we can briefly check the results</p><pre><code class="language-julia hljs">@printf(&quot;x, q, CharmSea = %0.4e, %0.4e, %0.4e\n&quot;, x, q, csea)
+@printf(&quot;as(mz2) = %0.4e&quot;, asmz)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">x, q, CharmSea = 1.0000e-03, 1.0000e+03, 1.8708e+00
+as(mz2) = 1.1807e-01</code></pre><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../quickstart/">« Quick start</a><a class="docs-footer-nextpage" href="../testsgns/">Test QCDNUM evolution options »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.25 on <span class="colophon-date" title="Monday 29 January 2024 16:50">Monday 29 January 2024</span>. Using Julia version 1.6.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Timing evolution and structure function evaluation · QCDNUM.jl</title><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">QCDNUM.jl</a></span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Introduction</a></li><li><a class="tocitem" href="../installation/">Installation</a></li><li><a class="tocitem" href="../notebook/">Notebook tutorial</a></li><li><a class="tocitem" href="../quickstart/">Quick start</a></li><li><span class="tocitem">QCDNUM example jobs</span><ul><li><a class="tocitem" href="../example/">QCDNUM example program</a></li><li><a class="tocitem" href="../testsgns/">Test QCDNUM evolution options</a></li><li class="is-active"><a class="tocitem" href>Timing evolution and structure function evaluation</a></li></ul></li><li><span class="tocitem">Further examples</span><ul><li><a class="tocitem" href="../splint/">SPLINT package example</a></li></ul></li><li><a class="tocitem" href="../functions/">Available functions</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">QCDNUM example jobs</a></li><li class="is-active"><a href>Timing evolution and structure function evaluation</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Timing evolution and structure function evaluation</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/cescalara/QCDNUM.jl/blob/main/examples/timing.jl" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Timing-evolution-and-structure-function-evaluation"><a class="docs-heading-anchor" href="#Timing-evolution-and-structure-function-evaluation">Timing evolution and structure function evaluation</a><a id="Timing-evolution-and-structure-function-evaluation-1"></a><a class="docs-heading-anchor-permalink" href="#Timing-evolution-and-structure-function-evaluation" title="Permalink"></a></h1><p>Based on the <code>timing.f</code> test job.</p><pre><code class="language-julia hljs">using QCDNUM
+using Printf</code></pre><p>Again, we start by defining the necessary inputs...</p><pre><code class="language-julia hljs">xmin = Float64.([1e-5, 0.2, 0.4, 0.6, 0.75])
+iwt = Int32.([1, 2, 4, 8, 16])
+ngx = 5
+nxin = 100
+iosp = 3
+nx = 0
+qlim = Float64.([2e0, 1e4])
+wt = Float64.([1e0, 1e0])
+ngq = 2
+nqin = 50
+nq = 1
+itype = 1
+filename = &quot;weights/unpolarised.wgt&quot;
+iord = 3
+as0 = 0.364
+r20 = 2.0
+q2c = 3.0
+q2b = 25.0
+q0 = 2.0
+nfin = 0
+iqt = 999;
+
+def = Float64.([0., 0., 0., 0., 0.,-1., 0., 1., 0., 0., 0., 0., 0.,
+      0., 0., 0., 0.,-1., 0., 0., 0., 1., 0., 0., 0., 0.,
+      0., 0., 0.,-1., 0., 0., 0., 0., 0., 1., 0., 0., 0.,
+      0., 0., 0., 0., 0., 1., 0., 0., 0., 0., 0., 0., 0.,
+      0., 0., 0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0.,
+      0., 0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
+      0., 0.,-1., 0., 0., 0., 0., 0., 0., 0., 1., 0., 0.,
+      0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
+      0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
+      0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
+      0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
+      0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]);
+
+function func(ipdf, x)::Float64
+    i = ipdf[]
+    xb = x[]
+    adbar = 0.1939875
+    f = 0
+    if (i == 0)
+        ag = 1.7
+        f = ag * xb^-0.1 * (1.0-xb)^5.0
+    end
+    if (i == 1)
+        ad = 3.064320
+        f = ad * xb^0.8 * (1.0-xb)^4.0
+    end
+    if (i == 2)
+        au = 5.107200
+        f = au * xb^0.8 * (1.0-xb)^3.0
+    end
+    if (i == 3)
+        f = 0.0
+    end
+    if (i == 4)
+        f = adbar * xb^-0.1 * (1.0-xb)^6.0
+    end
+    if (i == 5)
+        f = adbar * xb^-0.1 * (1.0-xb)^6.0 * (1.0-xb)
+    end
+    if (i == 6)
+        xdbar = adbar * xb^-0.1 * (1.0-xb)^6.0
+        xubar = adbar * xb^-0.1 * (1.0-xb)^6.0 * (1.0-xb)
+        f = 0.2 * (xdbar + xubar)
+    end
+    if (i == 7)
+        f = 0.0
+    end
+    if (i == 8)
+        f = 0.0
+    end
+    if (i == 9)
+        f = 0.0
+    end
+    if (i == 10)
+        f = 0.0
+    end
+    if (i == 11)
+        f = 0.0
+    end
+    if (i == 12)
+        f = 0.0
+    end
+    return f
+end
+
+func_c = @cfunction(func, Float64, (Ref{Int32}, Ref{Float64}))
+
+proton = Float64.([4.,1.,4.,1.,4.,1.,0.,1.,4.,1.,4.,1.,4.])/9.0;
+xx = Array{Float64}(undef, 1000)
+q2 = Array{Float64}(undef, 1000)
+
+roots = 300
+shera = roots*roots
+xlog1 = log(xmin[1])
+xlog2 = log(0.99)
+qlog1 = log(qlim[1])
+qlog2 = log(qlim[ngq])
+ntot = 1
+while (ntot &lt; 1001)
+    rval = rand()
+    xlog = xlog1 + rval*(xlog2-xlog1)
+    xxxx = exp(xlog)
+    rval = rand()
+    qlog = qlog1 + rval*(qlog2-qlog1)
+    qqqq = exp(qlog)
+    if (qqqq &lt;= xxxx*shera)
+        xx[ntot] = xxxx
+        q2[ntot] = qqqq
+        global ntot += 1
+    end
+end</code></pre><p>Now, we set up QCDNUM and time many evolution and structure function evaluations.</p><pre><code class="language-julia hljs">QCDNUM.qcinit(-6, &quot; &quot;)
+nx = QCDNUM.gxmake(xmin, iwt, ngx, nxin, iosp)
+nq = QCDNUM.gqmake(qlim, wt, ngq, nqin)
+nw = QCDNUM.fillwt(1)
+nw = QCDNUM.zmfillw()
+QCDNUM.setord(iord)
+QCDNUM.setalf(as0, r20)
+iqc = QCDNUM.iqfrmq(q2c)
+iqb = QCDNUM.iqfrmq(q2b)
+QCDNUM.setcbt(nfin, iqc, iqb, iqt)
+iq0 = QCDNUM.iqfrmq(q0)
+
+@printf(&quot; Wait: 1000 evols and 2.10^6 stfs will take ... &quot;)
+@time begin
+    for iter in 1:1000
+        eps = QCDNUM.evolfg(itype, func_c, def, iq0)
+        ff = QCDNUM.zmstfun(1, proton, xx, q2, 1000, 1)
+        ff = QCDNUM.zmstfun(2, proton, xx, q2, 1000, 1)
+    end
+end</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">  +---------------------------------------------------------------------+
+  |                                                                     |
+  |    If you use QCDNUM, please refer to:                              |
+  |                                                                     |
+  |    M. Botje, Comput. Phys. Commun. 182(2011)490, arXiV:1005.1481    |
+  |                                                                     |
+  +---------------------------------------------------------------------+
+
+
+ FILLWT: start unpolarised weight calculations
+ Subgrids    5 Subgrid points   22   20   18   16   60
+ Pij LO
+ Pij NLO
+ Pij NNLO
+ Aij LO
+ Aij NLO
+ Aij NNLO
+ FILLWT: weight calculations completed
+
+
+ ZMFILLW: start weight calculations   4  38   0   0
+ ZMFILLW: calculations completed
+
+
+
+ Wait: 1000 evols and 2.10^6 stfs will take ...   6.245433 seconds (25.56 k allocations: 16.815 MiB, 0.22% gc time, 0.15% compilation time)</code></pre><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../testsgns/">« Test QCDNUM evolution options</a><a class="docs-footer-nextpage" href="../splint/">SPLINT package example »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.25 on <span class="colophon-date" title="Monday 29 January 2024 16:50">Monday 29 January 2024</span>. Using Julia version 1.6.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
