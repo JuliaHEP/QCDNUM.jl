@@ -15,10 +15,35 @@ function qcinit(lun::Integer, filename::String)
     qcdnum = Libdl.dlopen(libqcdnum, RTLD_NOW | RTLD_GLOBAL)
 
     lun = Ref{Int32}(lun)
- 
+
     @qlccall qcinit_(lun::Ref{Int32}, filename::Ptr{UInt8},
-                   sizeof(filename)::Csize_t)::Nothing
-    
+        sizeof(filename)::Csize_t)::Nothing
+
+    nothing
+end
+
+"""
+    qcinit(lun, filename, libqcdnum)
+
+Initialise QCDNUM - should be called before anything else. 
+
+# Arguments
+- `lun::Integer`: the output logical unit number. When set to 6, 
+the QCDNUM messages appear on the standard output. When set to -6, 
+the QCDNUM banner printout is suppressed.
+- `filename::String`: the output filename to store log. Irrelevant
+when `lun` is set to 6/-6
+- `libqcdnum::String`: the path to the QCDNUM shared library
+"""
+function qcinit(lun::Integer, filename::String, libqcdnum::String)
+
+    qcdnum = Libdl.dlopen(libqcdnum, RTLD_NOW | RTLD_GLOBAL)
+
+    lun = Ref{Int32}(lun)
+
+    @qlccall qcinit_(lun::Ref{Int32}, filename::Ptr{UInt8},
+        sizeof(filename)::Csize_t)::Nothing
+
     nothing
 end
 
@@ -40,13 +65,13 @@ function setlun(lun::Integer, filename::String)
     if lun < 1 || lun > 99
 
         throw(DomainError(lun, "lun must be in the range [1, 99]"))
-        
+
     end
-    
+
     lun = Ref{Int32}(lun)
 
     @qlccall setlun_(lun::Ref{Int32}, filename::Ptr{UInt8},
-                   sizeof(filename)::Csize_t)::Nothing
+        sizeof(filename)::Csize_t)::Nothing
 
     nothing
 end
@@ -60,11 +85,11 @@ before or after `qcinit`. Handy if you want to open a file
 on a unit that is guaranteed to be free.
 """
 function nxtlun(lmin::Integer)
-    
+
     lmin = Ref{Int32}(lmin)
 
     lun = @qlccall nxtlun_(lmin::Ref{Int32})::Int32
-    
+
     lun[]
 end
 
@@ -82,9 +107,9 @@ function qstore(action::String, i::Integer, val::Float64)
 
     i = Ref{Int32}(i)
     val = Ref{Float64}(val)
-    
+
     @qlccall qstore_(action::Ptr{UInt8}, i::Ref{Int32}, val::Ref{Float64},
-                   sizeof(action)::Csize_t)::Nothing
+        sizeof(action)::Csize_t)::Nothing
 
     nothing
 end
@@ -105,9 +130,9 @@ function qstore(action::String, i::Integer)
 
     i = Ref{Int32}(i)
     val = Ref{Float64}()
-    
+
     @qlccall qstore_(action::Ptr{UInt8}, i::Ref{Int32}, val::Ref{Float64},
-                   sizeof(action)::Csize_t)::Nothing
+        sizeof(action)::Csize_t)::Nothing
 
     val[]
 end
@@ -130,7 +155,7 @@ function setint(param::String, ival::Integer)
     ival = Ref{Int32}(ival)
 
     @qlccall setint_(param::Ptr{UInt8}, ival::Ref{Int32},
-                   sizeof(param)::Csize_t)::Nothing
+        sizeof(param)::Csize_t)::Nothing
 
     nothing
 end
@@ -154,8 +179,8 @@ function getint(param::String)
     ival = Ref{Int32}()
 
     @qlccall getint_(param::Ptr{UInt8}, ival::Ref{Int32},
-                  sizeof(param)::Csize_t)::Nothing
-    
+        sizeof(param)::Csize_t)::Nothing
+
     ival[]
 end
 
@@ -180,7 +205,7 @@ function setval(param::String, val::Float64)
     val = Ref{Float64}(val)
 
     @qlccall setval_(param::Ptr{UInt8}, val::Ref{Float64},
-                   sizeof(param)::Csize_t)::Nothing
+        sizeof(param)::Csize_t)::Nothing
 
     nothing
 end
@@ -209,7 +234,7 @@ function getval(param::String)
     val = Ref{Float64}()
 
     @qlccall getval_(param::Ptr{UInt8}, val::Ref{Float64},
-                   sizeof(param)::Csize_t)::Nothing
+        sizeof(param)::Csize_t)::Nothing
 
     val[]
 end
