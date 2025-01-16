@@ -1,6 +1,6 @@
 module QCDNUM
 
-using QCDNUM_jll, Libdl
+using Libdl
 using FunctionWrappers: FunctionWrapper
 
 include("threadsafety.jl")

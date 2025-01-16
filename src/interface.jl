@@ -132,7 +132,7 @@ end
 
 High-level default initialisation for QCDNUM.
 """
-function init(; banner::Bool=false, output_file::String="")
+function init(; banner::Bool=false, output_file::String="", libqcdnum_loc::String="libQCDNUM.so")
 
     if banner
         b = 6
@@ -140,7 +140,7 @@ function init(; banner::Bool=false, output_file::String="")
         b = -6
     end
 
-    QCDNUM.qcinit(b, output_file)
+    QCDNUM.qcinit(b, output_file, libqcdnum_loc)
 
     nothing
 end
@@ -241,7 +241,7 @@ function _io_format(filename::AbstractString)
 end
 
 
-function _io_type(::Val{format}) where format
+function _io_type(::Val{format}) where {format}
     if format == :hdf5
         return throw(ErrorException("QCDNUM HDF5 I/O not available, package HDF5 must be loaded, e.g. via `import HDF5`."))
     else
