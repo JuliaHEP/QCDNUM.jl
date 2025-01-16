@@ -35,9 +35,9 @@ the QCDNUM banner printout is suppressed.
 when `lun` is set to 6/-6
 - `libqcdnum::String`: the path to the QCDNUM shared library
 """
-function qcinit(lun::Integer, filename::String, libqcdnum::String)
+function qcinit(lun::Integer, filename::String, libqcdnum_loc::String)
 
-    qcdnum = Libdl.dlopen(libqcdnum, RTLD_NOW | RTLD_GLOBAL)
+    qcdnum = Libdl.dlopen(libqcdnum_loc, RTLD_NOW | RTLD_GLOBAL)
 
     lun = Ref{Int32}(lun)
 
